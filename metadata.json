@@ -1,0 +1,7 @@
+{
+  "name": "ANGEL",
+  "description": "ANGEL — Long-term intelligent personal AI agent with universal action engine, application control (WhatsApp, Canva, CapCut, GitHub, Google Drive), web automation, task-bound permissions, real-time world intelligence, multimodal vision, and live voice streaming.",
+  "requestFramePermissions": ["microphone", "camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
