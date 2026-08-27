@@ -1,7 +1,8 @@
 import React from "react";
 import { AngelLogo } from "./AngelLogo";
 import { useAuth } from "../contexts/AuthContext";
-import { PanelLeft, User } from "lucide-react";
+import { PanelLeft, User, Settings as SettingsIcon } from "lucide-react";
+import { UserAvatar } from "./UserAvatar";
 
 interface HeaderProps {
   isSidebarOpen: boolean;
@@ -17,7 +18,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenSettings,
   onOpenAuth,
 }) => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
 
   return (
     <header
@@ -44,23 +45,36 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Right side: Sign In / User Account Button ONLY */}
-      <div className="flex items-center">
+      {/* Right side: User Badge + Settings Button (when signed in) OR Sign In button ONLY (when signed out) */}
+      <div className="flex items-center gap-2">
         {user ? (
-          <button
-            id="btn-user-header"
-            onClick={() => onOpenSettings()}
-            className="flex items-center gap-2 pl-2 pr-2.5 py-1 text-xs font-medium rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-200 transition-colors"
-            title="Account & Settings"
-            aria-label="User settings and account"
-          >
-            <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-cyan-600 to-cyan-400 text-white flex items-center justify-center text-[10px] font-semibold">
-              {(user.display_name || user.email || "A").charAt(0).toUpperCase()}
+          <>
+            <div
+              id="user-badge-header"
+              className="flex items-center gap-2 pl-1.5 pr-3 py-1 text-xs font-medium rounded-full bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-200 shadow-2xs select-none"
+              title={`Signed in as @${user.username || user.email.split("@")[0]}`}
+            >
+              <UserAvatar
+                avatarId={profile?.avatar_url || user.avatar_id}
+                usernameOrEmail={user.username || user.email}
+                size="xs"
+              />
+              <span className="max-w-[120px] truncate text-[11px] font-semibold text-neutral-900 dark:text-neutral-100">
+                @{user.username || user.display_name?.toLowerCase().replace(/\s+/g, "_") || user.email.split("@")[0]}
+              </span>
             </div>
-            <span className="hidden sm:inline max-w-[100px] truncate text-[11px]">
-              {user.display_name || user.email.split("@")[0]}
-            </span>
-          </button>
+
+            {/* Direct Dedicated Settings Button - only available after signing in */}
+            <button
+              id="btn-header-settings"
+              onClick={onOpenSettings}
+              className="p-2 rounded-xl text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800/80 transition-colors"
+              title="Open Settings"
+              aria-label="Open Settings"
+            >
+              <SettingsIcon className="w-4 h-4" />
+            </button>
+          </>
         ) : (
           <button
             id="btn-signin-header"

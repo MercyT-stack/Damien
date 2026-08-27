@@ -11,6 +11,7 @@ import { TaskExecutionPanel } from "./TaskExecutionPanel";
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { ArtifactViewerModal } from "./artifacts/ArtifactViewerModal";
 import { ActionPreviewModal } from "./ActionPreviewModal";
+import { UserAvatar } from "./UserAvatar";
 import { 
   Copy, 
   Check, 
@@ -297,9 +298,12 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
 
                   {/* User Avatar on Right */}
                   {isUser && (
-                    <div className="w-8 h-8 rounded-xl bg-neutral-800 text-neutral-100 dark:bg-neutral-200 dark:text-neutral-900 flex items-center justify-center text-xs font-bold shrink-0 shadow-sm mt-0.5 border border-neutral-700 dark:border-neutral-300">
-                      {(user?.display_name || user?.email || "U").charAt(0).toUpperCase()}
-                    </div>
+                    <UserAvatar
+                      avatarId={user?.avatar_id}
+                      usernameOrEmail={user?.username || user?.email}
+                      size="md"
+                      className="mt-0.5"
+                    />
                   )}
                 </div>
               );
@@ -315,9 +319,12 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                   </div>
                   <div className="italic text-neutral-900">{liveTranscript.user}</div>
                 </div>
-                <div className="w-8 h-8 rounded-xl bg-cyan-500 text-neutral-950 flex items-center justify-center text-xs font-bold shrink-0 shadow-sm mt-0.5">
-                  {(user?.display_name || user?.email || "U").charAt(0).toUpperCase()}
-                </div>
+                <UserAvatar
+                  avatarId={user?.avatar_id}
+                  usernameOrEmail={user?.username || user?.email}
+                  size="md"
+                  className="mt-0.5"
+                />
               </div>
             )}
 

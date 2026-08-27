@@ -19,6 +19,7 @@ import { useVoice } from "../contexts/VoiceContext";
 import { useAuth } from "../contexts/AuthContext";
 import { AngelVoiceEmblem } from "./AngelVoiceEmblem";
 import { AngelLogo } from "./AngelLogo";
+import { UserAvatar } from "./UserAvatar";
 
 export const LiveVoiceOverlay: React.FC = () => {
   const {
@@ -171,9 +172,12 @@ export const LiveVoiceOverlay: React.FC = () => {
                     <div className="p-3 rounded-2xl bg-white text-neutral-900 text-xs shadow-sm max-w-[85%]">
                       <div className="italic">{liveTranscript.user}</div>
                     </div>
-                    <div className="w-7 h-7 rounded-xl bg-neutral-800 text-neutral-200 border border-neutral-700 flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold shadow-xs">
-                      {(user?.display_name || user?.email || "U").charAt(0).toUpperCase()}
-                    </div>
+                    <UserAvatar
+                      avatarId={user?.avatar_id}
+                      usernameOrEmail={user?.username || user?.email}
+                      size="sm"
+                      className="mt-0.5"
+                    />
                   </div>
                 )}
 

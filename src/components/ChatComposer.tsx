@@ -84,6 +84,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
   const toolsMenuRef = useRef<HTMLDivElement>(null);
   const intelligenceMenuRef = useRef<HTMLDivElement>(null);
 
@@ -384,11 +385,18 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
 
   return (
     <div id="angel-chat-composer" className="w-full max-w-3xl mx-auto px-4 pb-4 sm:pb-6 relative">
-      {/* Hidden File Input for Document Attachment triggered strictly from + menu */}
+      {/* Hidden File Inputs for Document & Image Attachments */}
       <input
         ref={fileInputRef}
         type="file"
-        accept=".pdf,.doc,.docx,.txt,.md,.csv,.xlsx,.json,.js,.ts,.tsx,.jsx,.html,.py,.sql,.css,.xml,.yml,.yaml,image/*"
+        accept=".pdf,.doc,.docx,.txt,.md,.csv,.xlsx,.json,.js,.ts,.tsx,.jsx,.html,.py,.sql,.css,.xml,.yml,.yaml"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+      <input
+        ref={imageInputRef}
+        type="file"
+        accept="image/*,application/pdf"
         className="hidden"
         onChange={handleFileChange}
       />
@@ -519,6 +527,21 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
               </div>
               <div className="space-y-0.5">
                 <button
+                  id="btn-menu-upload-image"
+                  onClick={() => {
+                    imageInputRef.current?.click();
+                    setShowToolsMenu(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+                >
+                  <ImageIcon className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <div className="text-left">
+                    <span className="block font-medium">Upload Image / PDF</span>
+                    <span className="text-[10px] text-neutral-400">Photos, diagrams, invoices, PDFs</span>
+                  </div>
+                </button>
+
+                <button
                   id="btn-menu-attach-file"
                   onClick={() => {
                     fileInputRef.current?.click();
@@ -528,8 +551,8 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
                 >
                   <Paperclip className="w-4 h-4 text-cyan-500 shrink-0" />
                   <div className="text-left">
-                    <span className="block font-medium">Attach Document or File</span>
-                    <span className="text-[10px] text-neutral-400">PDF, DOCX, CSV, TXT, code, images</span>
+                    <span className="block font-medium">Attach Document or Code</span>
+                    <span className="text-[10px] text-neutral-400">DOCX, CSV, TXT, code files</span>
                   </div>
                 </button>
 
@@ -541,10 +564,10 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
                   }}
                   className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
                 >
-                  <Camera className="w-4 h-4 text-blue-500 shrink-0" />
+                  <Eye className="w-4 h-4 text-blue-500 shrink-0" />
                   <div className="text-left">
-                    <span className="block font-medium">Live Camera & Screen</span>
-                    <span className="text-[10px] text-neutral-400">Capture visual scene for Angel</span>
+                    <span className="block font-medium">Real-Time Camera & Screen Vision</span>
+                    <span className="text-[10px] text-neutral-400">Temporary live eye & digital inspector</span>
                   </div>
                 </button>
               </div>

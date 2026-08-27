@@ -4,6 +4,7 @@ import { useConversation } from "../contexts/ConversationContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useMemory } from "../contexts/MemoryContext";
 import { SettingsTab } from "./SettingsModal";
+import { UserAvatar } from "./UserAvatar";
 import { 
   Plus, 
   Search, 
@@ -17,7 +18,6 @@ import {
   Database, 
   Lock, 
   LogOut, 
-  MoreHorizontal, 
   PanelLeftClose, 
   ChevronDown,
   ChevronRight,
@@ -63,30 +63,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
     deleteProject,
   } = useMemory();
 
-  const [showMoreMenu, setShowMoreMenu] = useState<boolean>(false);
   const [editingConvId, setEditingConvId] = useState<string | null>(null);
   const [editingTitle, setEditingTitle] = useState<string>("");
   const [isProjectsExpanded, setIsProjectsExpanded] = useState<boolean>(true);
   const [isAddingProject, setIsAddingProject] = useState<boolean>(false);
   const [newProjectName, setNewProjectName] = useState<string>("");
   const [isCreatingProject, setIsCreatingProject] = useState<boolean>(false);
-  const moreMenuRef = useRef<HTMLDivElement>(null);
   const projectInputRef = useRef<HTMLInputElement>(null);
-
-  // Close more menu on click outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
-        setShowMoreMenu(false);
-      }
-    };
-    if (showMoreMenu) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showMoreMenu]);
 
   // Focus project input when opening inline creator
   useEffect(() => {
@@ -171,7 +154,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             : "-translate-x-full md:-translate-x-full md:w-0 md:border-r-0 md:overflow-hidden opacity-0 pointer-events-none"
         }`}
       >
-        {/* Top Header with Logo, More Menu, and Recede Icon */}
+        {/* Top Header with Logo and Recede Icon */}
         <div className="flex items-center justify-between p-3.5 border-b border-neutral-200/80 dark:border-neutral-800/80 relative">
           <div className="flex items-center gap-2.5 min-w-0">
             <AngelLogo size="sm" />
@@ -185,110 +168,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </div>
 
-          {/* Action Icons: [More Icon] and [Recede Icon] */}
-          <div className="flex items-center gap-1">
-            {/* [More Icon] Button */}
-            <div className="relative" ref={moreMenuRef}>
-              <button
-                id="btn-sidebar-more"
-                onClick={() => setShowMoreMenu(!showMoreMenu)}
-                className={`p-1.5 rounded-lg text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition ${
-                  showMoreMenu ? "bg-neutral-200/80 dark:bg-neutral-800/80 text-neutral-900 dark:text-white" : ""
-                }`}
-                title="Sidebar options & actions"
-                aria-label="More sidebar options"
-              >
-                <MoreHorizontal className="w-4 h-4" />
-              </button>
-
-              {/* More Dropdown Menu */}
-              {showMoreMenu && (
-                <div
-                  id="sidebar-more-dropdown"
-                  className="absolute right-0 top-full mt-1.5 w-52 p-1.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-xl z-50 animate-scaleIn text-xs"
-                >
-                  <button
-                    onClick={() => {
-                      setShowMoreMenu(false);
-                      handleNewChat();
-                    }}
-                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
-                  >
-                    <Plus className="w-3.5 h-3.5 text-cyan-500" />
-                    <span>New Conversation</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setShowMoreMenu(false);
-                      onOpenSettings("projects");
-                    }}
-                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
-                  >
-                    <FolderKanban className="w-3.5 h-3.5 text-cyan-500" />
-                    <span>Projects & Workspaces</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setShowMoreMenu(false);
-                      onOpenSettings("personalization");
-                    }}
-                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
-                  >
-                    <BrainCircuit className="w-3.5 h-3.5 text-cyan-500" />
-                    <span>Personalization & Memory</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setShowMoreMenu(false);
-                      onOpenSettings("voice");
-                    }}
-                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
-                  >
-                    <Sliders className="w-3.5 h-3.5 text-neutral-400" />
-                    <span>Voice & Settings</span>
-                  </button>
-
-                  {user ? (
-                    <button
-                      onClick={() => {
-                        setShowMoreMenu(false);
-                        signOut();
-                      }}
-                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition"
-                    >
-                      <LogOut className="w-3.5 h-3.5" />
-                      <span>Sign Out ({user.display_name || user.email?.split("@")[0]})</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        setShowMoreMenu(false);
-                        onOpenAuth();
-                      }}
-                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-cyan-600 dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-950/40 transition font-medium"
-                    >
-                      <Lock className="w-3.5 h-3.5" />
-                      <span>Sign In / Register</span>
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* [Recede / Collapse Sidebar Icon] Button */}
-            <button
-              id="btn-recede-sidebar"
-              onClick={onClose}
-              className="p-1.5 text-neutral-500 hover:text-neutral-900 dark:hover:text-white rounded-lg hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition group"
-              title="Recede / Collapse Sidebar"
-              aria-label="Recede sidebar"
-            >
-              <PanelLeftClose className="w-4 h-4 text-neutral-500 group-hover:text-cyan-500 transition-colors" />
-            </button>
-          </div>
+          {/* [Recede / Collapse Sidebar Icon] Button */}
+          <button
+            id="btn-recede-sidebar"
+            onClick={onClose}
+            className="p-1.5 text-neutral-500 hover:text-neutral-900 dark:hover:text-white rounded-lg hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition group"
+            title="Recede / Collapse Sidebar"
+            aria-label="Recede sidebar"
+          >
+            <PanelLeftClose className="w-4 h-4 text-neutral-500 group-hover:text-cyan-500 transition-colors" />
+          </button>
         </div>
 
         {/* Primary Action: New Conversation */}
@@ -600,48 +489,52 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Bottom Section: Settings + User Profile */}
         <div className="p-3 border-t border-neutral-200/80 dark:border-neutral-800/80 bg-neutral-100/50 dark:bg-neutral-900/50 space-y-2">
-          {/* Settings Trigger */}
-          <button
-            id="btn-sidebar-settings"
-            onClick={() => onOpenSettings("voice")}
-            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition-colors"
-          >
-            <Settings className="w-4 h-4 text-neutral-500" />
-            <span>Settings</span>
-          </button>
-
-          {/* User Account Card */}
+          {/* User Account Card & Settings (Available once signed in) */}
           {user ? (
-            <div className="flex items-center justify-between p-2 rounded-xl bg-neutral-200/40 dark:bg-neutral-800/40">
-              <div className="flex items-center gap-2.5 min-w-0 pr-2">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-cyan-600 to-cyan-400 text-white flex items-center justify-center text-xs font-semibold shrink-0 shadow-xs">
-                  {(user.display_name || user.email || "A").charAt(0).toUpperCase()}
-                </div>
-                <div className="min-w-0 flex flex-col">
-                  <span className="text-xs font-medium text-neutral-900 dark:text-neutral-100 truncate">
-                    {user.display_name || "Angel User"}
-                  </span>
-                  <span className="text-[10px] text-neutral-500 truncate">{user.email}</span>
-                </div>
-              </div>
+            <>
+              {/* Settings Trigger */}
               <button
-                id="btn-sidebar-signout"
-                onClick={() => signOut()}
-                className="p-1.5 text-neutral-400 hover:text-rose-500 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
-                title="Sign Out"
-                aria-label="Sign out"
+                id="btn-sidebar-settings"
+                onClick={() => onOpenSettings("voice")}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition-colors"
               >
-                <LogOut className="w-3.5 h-3.5" />
+                <Settings className="w-4 h-4 text-neutral-500" />
+                <span>Settings</span>
               </button>
-            </div>
+
+              <div className="flex items-center justify-between p-2 rounded-xl bg-neutral-200/40 dark:bg-neutral-800/40">
+                <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                  <UserAvatar
+                    avatarId={user.avatar_id}
+                    usernameOrEmail={user.username || user.email}
+                    size="sm"
+                  />
+                  <div className="min-w-0 flex flex-col">
+                    <span className="text-xs font-semibold text-neutral-900 dark:text-neutral-100 truncate">
+                      @{user.username || user.display_name?.toLowerCase().replace(/\s+/g, "_") || "user"}
+                    </span>
+                    <span className="text-[10px] text-neutral-500 truncate">{user.display_name || user.email}</span>
+                  </div>
+                </div>
+                <button
+                  id="btn-sidebar-signout"
+                  onClick={() => signOut()}
+                  className="p-1.5 text-neutral-400 hover:text-rose-500 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+                  title="Sign Out"
+                  aria-label="Sign out"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </>
           ) : (
             <button
               id="btn-sidebar-login"
               onClick={() => onOpenAuth()}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium rounded-xl bg-cyan-500 hover:bg-cyan-600 text-neutral-950 font-semibold transition-colors shadow-xs"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-semibold rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-colors shadow-xs"
             >
               <Lock className="w-3.5 h-3.5" />
-              <span>Sign In / Register</span>
+              <span>Sign In to ANGEL</span>
             </button>
           )}
         </div>

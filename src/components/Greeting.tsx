@@ -10,11 +10,11 @@ interface GreetingProps {
 
 export const Greeting: React.FC<GreetingProps> = ({ onSelectPrompt }) => {
   const { user } = useAuth();
-  const displayName = user?.display_name || user?.name || undefined;
+  const greetingName = user?.username || user?.display_name?.split(" ")[0] || user?.name?.split(" ")[0] || undefined;
 
   const { greeting, subtitle } = useMemo(() => {
-    return getDynamicGreeting(displayName);
-  }, [displayName]);
+    return getDynamicGreeting(greetingName);
+  }, [greetingName]);
 
   const suggestionPrompts = [
     {

@@ -121,7 +121,7 @@ export function buildDynamicAngelSystemPrompt(options?: AngelContextOptions): st
   // 1. User Personalization Profile
   const profileParts: string[] = [];
   if (options.preferredName?.trim()) {
-    profileParts.push(`- User's Preferred Name: ${options.preferredName.trim()} (use this name naturally when addressing them)`);
+    profileParts.push(`- User's Chosen Name / Username: ${options.preferredName.trim()} (ALWAYS address the user directly by this chosen name or username across conversations and greetings, e.g. "Hey ${options.preferredName.trim()}", rather than generic titles or full real name)`);
   }
   if (options.communicationStyle) {
     profileParts.push(`- Communication Style Preference: ${options.communicationStyle}`);

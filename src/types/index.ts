@@ -91,6 +91,7 @@ export interface Profile {
   email: string;
   name: string;
   display_name: string;
+  username?: string;
   avatar_url?: string | null;
   preferences: UserPreferences;
   created_at?: string;

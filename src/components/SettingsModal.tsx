@@ -6,6 +6,8 @@ import { useMemory } from "../contexts/MemoryContext";
 import { useCapability } from "../contexts/CapabilityContext";
 import { VOICE_CATALOG } from "../config/voices";
 import { SUPPORTED_LANGUAGES } from "../config/languages";
+import { CHARACTER_AVATARS } from "../config/avatars";
+import { UserAvatar } from "./UserAvatar";
 import { 
   X, 
   Search,
@@ -82,7 +84,7 @@ export type SettingsTab =
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, initialTab }) => {
   const { theme, setTheme } = useTheme();
-  const { user, updateName, signOut } = useAuth();
+  const { user, updateName, updateUsername, updateAvatar, signOut } = useAuth();
   const { 
     selectedVoice, 
     selectVoice, 
@@ -133,12 +135,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
 
   // Account State
   const [displayNameInput, setDisplayNameInput] = useState<string>(user?.display_name || user?.name || "");
+  const [usernameInput, setUsernameInput] = useState<string>(user?.username || "");
   const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
   const [showSqlSchema, setShowSqlSchema] = useState<boolean>(false);
   const [copiedSql, setCopiedSql] = useState<boolean>(false);
 
   // Personalization Form State
-  const [preferredName, setPreferredName] = useState<string>(memoryPreferences.preferred_name || "");
+  const [preferredName, setPreferredName] = useState<string>(memoryPreferences.preferred_name || user?.username || "");
   const [commStyle, setCommStyle] = useState<string>(memoryPreferences.communication_style || "balanced");
   const [occupation, setOccupation] = useState<string>(memoryPreferences.occupation || "");
   const [customInstructions, setCustomInstructions] = useState<string>(memoryPreferences.custom_instructions || "");
@@ -199,6 +202,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
     if (user?.display_name || user?.name) {
       setDisplayNameInput(user.display_name || user.name || "");
     }
+    if (user?.username) {
+      setUsernameInput(user.username);
+    }
   }, [user]);
 
   if (!isOpen) return null;
@@ -221,6 +227,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
       .split(",")
       .map((s) => s.trim())
       .filter(Boolean);
+
+    if (preferredName.trim()) {
+      await updateUsername(preferredName.trim());
+    }
 
     await updatePreferences({
       preferred_name: preferredName.trim() || undefined,
@@ -265,9 +275,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!displayNameInput.trim()) return;
-    const ok = await updateName(displayNameInput.trim());
-    if (ok) {
+    let updated = false;
+    if (displayNameInput.trim()) {
+      const ok = await updateName(displayNameInput.trim());
+      if (ok) updated = true;
+    }
+    if (usernameInput.trim()) {
+      const okUser = await updateUsername(usernameInput.trim());
+      if (okUser) {
+        updated = true;
+        await updatePreferences({
+          preferred_name: usernameInput.trim(),
+        });
+      }
+    }
+    if (updated) {
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 2000);
     }
@@ -1236,27 +1258,83 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                   )}
                 </div>
 
-                <form onSubmit={handleSaveProfile} className="space-y-3">
+                <form onSubmit={handleSaveProfile} className="space-y-4">
+                  {/* Avatar Selector Grid */}
                   <div>
-                    <label className="text-xs text-neutral-400 block mb-1">Display Name</label>
+                    <label className="text-xs font-semibold text-neutral-300 block mb-1.5">
+                      Choose Your Character Avatar
+                    </label>
+                    <p className="text-[10px] text-neutral-400 mb-2.5">
+                      Pick a certified animated character or stuffed animal icon to represent you across Angel:
+                    </p>
+                    <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                      {CHARACTER_AVATARS.map((av) => {
+                        const isSelected = user?.avatar_id === av.id || (!user?.avatar_id && av.id === "monkey");
+                        return (
+                          <button
+                            key={av.id}
+                            type="button"
+                            onClick={async () => {
+                              await updateAvatar(av.id);
+                            }}
+                            className={`p-2 rounded-2xl border flex flex-col items-center gap-1 transition-all ${
+                              isSelected
+                                ? "bg-cyan-500/20 border-cyan-400 ring-2 ring-cyan-500/40 shadow-xs"
+                                : "bg-neutral-800/40 border-neutral-700/60 hover:bg-neutral-800 hover:border-neutral-600"
+                            }`}
+                            title={av.name}
+                          >
+                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-br ${av.bgColor} text-lg shadow-xs`}>
+                              <span role="img" aria-label={av.name}>{av.emoji}</span>
+                            </div>
+                            <span className={`text-[10px] truncate max-w-full font-medium ${isSelected ? "text-cyan-300 font-semibold" : "text-neutral-400"}`}>
+                              {av.name.split(" ")[1] || av.name}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs text-cyan-400 font-semibold block mb-1">
+                      Username (How Angel Addresses You)
+                    </label>
+                    <div className="relative flex items-center">
+                      <span className="absolute left-3 text-xs font-mono text-cyan-500">@</span>
+                      <input
+                        type="text"
+                        value={usernameInput}
+                        onChange={(e) => setUsernameInput(e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ""))}
+                        placeholder="mercy"
+                        className="w-full pl-7 pr-3 py-1.5 text-xs rounded-xl bg-neutral-800/60 text-cyan-200 placeholder-neutral-500 border border-cyan-500/40 focus:border-cyan-400 focus:outline-hidden font-medium"
+                      />
+                    </div>
+                    <p className="text-[10px] text-neutral-400 mt-1">
+                      This username will be displayed in greetings and used by Angel during conversations.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="text-xs text-neutral-400 block mb-1">Full / Display Name</label>
                     <input
                       type="text"
                       value={displayNameInput}
                       onChange={(e) => setDisplayNameInput(e.target.value)}
-                      placeholder="Enter display name"
+                      placeholder="e.g. Mercy Brown"
                       className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/60 text-white placeholder-neutral-500 border border-neutral-700/60 focus:border-cyan-500 focus:outline-hidden"
                     />
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between pt-1">
                     <button
                       type="submit"
                       className="px-4 py-1.5 text-xs font-semibold rounded-xl bg-white text-neutral-950 hover:bg-neutral-200"
                     >
-                      Update Name
+                      Save Account Changes
                     </button>
                     {saveSuccess && (
                       <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
-                        <Check className="w-3.5 h-3.5" /> Updated
+                        <Check className="w-3.5 h-3.5" /> Saved
                       </span>
                     )}
                   </div>

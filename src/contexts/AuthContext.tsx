@@ -9,10 +9,12 @@ interface AuthContextType {
   isLoading: boolean;
   isSupabaseLive: boolean;
   signIn: (email: string, pass: string) => Promise<{ error: Error | null }>;
-  signUp: (email: string, pass: string, name: string) => Promise<{ error: Error | null }>;
-  signInGoogle: (customEmail?: string) => Promise<{ error: Error | null }>;
+  signUp: (email: string, pass: string, name: string, username?: string) => Promise<{ error: Error | null }>;
+  signInGoogle: (customEmail?: string, username?: string, customName?: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   updateName: (newName: string) => Promise<boolean>;
+  updateUsername: (newUsername: string) => Promise<boolean>;
+  updateAvatar: (avatarId: string) => Promise<boolean>;
   refreshProfile: () => Promise<void>;
 }
 
@@ -49,11 +51,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (supabase) {
       const { data: authListener } = supabase.auth.onAuthStateChange(async (_event, session) => {
         if (session?.user) {
+          const uMeta = session.user.user_metadata || {};
           const u: AuthSessionUser = {
             id: session.user.id,
             email: session.user.email || "",
-            display_name: session.user.user_metadata?.display_name || session.user.email?.split("@")[0],
-            name: session.user.user_metadata?.name || session.user.email?.split("@")[0],
+            display_name: uMeta.display_name || session.user.email?.split("@")[0],
+            name: uMeta.name || session.user.email?.split("@")[0],
+            username: uMeta.username || session.user.email?.split("@")[0],
           };
           setUser(u);
           const prof = await getUserProfile(u.id);
@@ -80,8 +84,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error: res.error };
   };
 
-  const signUp = async (email: string, pass: string, name: string) => {
-    const res = await signUpUser(email, pass, name);
+  const signUp = async (email: string, pass: string, name: string, username?: string) => {
+    const res = await signUpUser(email, pass, name, username);
     if (!res.error && res.user) {
       setUser(res.user);
       const prof = await getUserProfile(res.user.id);
@@ -90,8 +94,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error: res.error };
   };
 
-  const signInGoogle = async (customEmail?: string) => {
-    const res = await signInWithGoogle(customEmail);
+  const signInGoogle = async (customEmail?: string, username?: string, customName?: string) => {
+    const res = await signInWithGoogle(customEmail, username, customName);
     if (!res.error && res.user) {
       setUser(res.user);
       const prof = await getUserProfile(res.user.id);
@@ -120,6 +124,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return false;
   };
 
+  const updateUsername = async (newUsername: string): Promise<boolean> => {
+    if (!user) return false;
+    const cleanUsername = newUsername.trim().toLowerCase().replace(/[^a-zA-Z0-9_-]/g, "");
+    if (!cleanUsername) return false;
+    const res = await updateUserProfile(user.id, {
+      username: cleanUsername,
+    });
+    if (res) {
+      setProfile(res);
+      setUser((prev) => (prev ? { ...prev, username: cleanUsername } : null));
+      return true;
+    }
+    return false;
+  };
+
+  const updateAvatar = async (avatarId: string): Promise<boolean> => {
+    if (!user) return false;
+    const res = await updateUserProfile(user.id, {
+      avatar_url: avatarId,
+    });
+    if (res) {
+      setProfile(res);
+      setUser((prev) => (prev ? { ...prev, avatar_id: avatarId } : null));
+      return true;
+    }
+    return false;
+  };
+
   const refreshProfile = async () => {
     if (user) {
       const prof = await getUserProfile(user.id);
@@ -139,6 +171,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signInGoogle,
         signOut,
         updateName,
+        updateUsername,
+        updateAvatar,
         refreshProfile,
       }}
     >

@@ -378,7 +378,7 @@ export const ConversationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       }
 
       const contextOptions: AngelContextPayload = {
-        preferredName: memoryPrefs.preferred_name || user?.display_name || undefined,
+        preferredName: user?.username || memoryPrefs.preferred_name || user?.display_name || undefined,
         communicationStyle: memoryPrefs.communication_style,
         customInstructions: memoryPrefs.custom_instructions,
         occupation: memoryPrefs.occupation,
