@@ -78,7 +78,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
       case "code":
         return <Code2 className="w-4 h-4 text-emerald-400" />;
       case "spreadsheet":
-        return <Table className="w-4 h-4 text-amber-400" />;
+        return <Table className="w-4 h-4 text-cyan-400" />;
       case "research":
         return <BookOpen className="w-4 h-4 text-purple-400" />;
       case "diagram":
@@ -86,7 +86,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
       case "presentation":
         return <Presentation className="w-4 h-4 text-rose-400" />;
       default:
-        return <Sparkles className="w-4 h-4 text-amber-400" />;
+        return <Sparkles className="w-4 h-4 text-cyan-400" />;
     }
   };
 
@@ -131,7 +131,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
         {/* Loading Indicator */}
         {isLoadingMessages && messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-3">
-            <RefreshCw className="w-6 h-6 animate-spin text-amber-500" />
+            <RefreshCw className="w-6 h-6 animate-spin text-cyan-500" />
             <span className="text-xs text-neutral-400">Loading conversation history...</span>
           </div>
         ) : messages.length === 0 && !isStreaming && !isVoiceActive ? (
@@ -155,7 +155,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                 >
                   {/* Angel Avatar on Left */}
                   {!isUser && (
-                    <div className="w-8 h-8 rounded-xl bg-neutral-900 border border-amber-500/40 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                    <div className="w-8 h-8 rounded-xl bg-neutral-900 border border-cyan-500/40 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                       <AngelLogo size="xs" />
                     </div>
                   )}
@@ -172,17 +172,17 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                     {!isUser && (
                       <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-neutral-800/80 text-xs">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold tracking-wider uppercase text-amber-500 text-[11px]">
+                          <span className="font-bold tracking-wider uppercase text-cyan-500 text-[11px]">
                             ANGEL
                           </span>
                           {isVoiceMsg && (
-                            <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-400 font-medium">
+                            <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-md bg-cyan-500/10 text-cyan-400 font-medium">
                               <Volume2 className="w-3 h-3" />
                               <span>Spoken</span>
                             </span>
                           )}
                           {toolCalls.length > 0 && (
-                            <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-400 font-mono">
+                            <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-md bg-cyan-500/10 text-cyan-400 font-mono">
                               <CheckCircle2 className="w-3 h-3" />
                               <span>{toolCalls[0].toolName || "Tool Executed"}</span>
                             </span>
@@ -237,7 +237,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                         {sources.length > 0 && (
                           <div className="pt-2 border-t border-neutral-800/60 space-y-1.5">
                             <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
-                              <Globe className="w-3 h-3 text-amber-400" />
+                              <Globe className="w-3 h-3 text-cyan-400" />
                               <span>Verified Sources & Citations:</span>
                             </div>
                             <div className="flex flex-wrap gap-1.5">
@@ -247,7 +247,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                                   href={src.url || "#"}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-amber-500/40 text-[11px] text-neutral-300 hover:text-amber-300 transition-colors"
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-cyan-500/40 text-[11px] text-neutral-300 hover:text-cyan-300 transition-colors"
                                 >
                                   <span className="truncate max-w-[140px]">{src.title || src.domain || `Source ${sIdx + 1}`}</span>
                                   <ExternalLink className="w-2.5 h-2.5 opacity-60 shrink-0" />
@@ -264,15 +264,15 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                               <div
                                 key={art.id}
                                 onClick={() => setActiveArtifactModal(art)}
-                                className="group/art flex items-center justify-between p-3 rounded-xl bg-neutral-950/80 border border-neutral-800 hover:border-amber-500/50 hover:bg-neutral-950 transition-all cursor-pointer shadow-sm"
+                                className="group/art flex items-center justify-between p-3 rounded-xl bg-neutral-950/80 border border-neutral-800 hover:border-cyan-500/50 hover:bg-neutral-950 transition-all cursor-pointer shadow-sm"
                               >
                                 <div className="flex items-center gap-3 min-w-0">
-                                  <div className="p-2 rounded-lg bg-neutral-900 border border-neutral-800 group-hover/art:border-amber-500/30">
+                                  <div className="p-2 rounded-lg bg-neutral-900 border border-neutral-800 group-hover/art:border-cyan-500/30">
                                     {getArtifactIcon(art.type)}
                                   </div>
                                   <div className="min-w-0">
                                     <div className="flex items-center gap-1.5">
-                                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-500 font-mono">
+                                      <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-500 font-mono">
                                         {art.type}
                                       </span>
                                       <span className="text-[10px] text-neutral-500">• Click to open viewer</span>
@@ -283,7 +283,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                                   </div>
                                 </div>
 
-                                <div className="flex items-center gap-1 text-neutral-400 group-hover/art:text-amber-400 px-2 py-1 rounded-lg text-xs">
+                                <div className="flex items-center gap-1 text-neutral-400 group-hover/art:text-cyan-400 px-2 py-1 rounded-lg text-xs">
                                   <Eye className="w-3.5 h-3.5" />
                                   <span className="text-[11px] font-medium hidden sm:inline">Preview</span>
                                 </div>
@@ -308,14 +308,14 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
             {/* Live User Spoken Stream Indicator */}
             {isVoiceActive && liveTranscript.user && (
               <div className="flex gap-3 justify-end animate-fadeIn">
-                <div className="relative max-w-[85%] sm:max-w-[80%] rounded-2xl p-4 sm:p-5 text-sm leading-relaxed bg-white text-neutral-950 rounded-tr-xs shadow-md border border-amber-500/40">
-                  <div className="flex items-center gap-1.5 text-[10px] text-amber-600 font-semibold mb-1">
+                <div className="relative max-w-[85%] sm:max-w-[80%] rounded-2xl p-4 sm:p-5 text-sm leading-relaxed bg-white text-neutral-950 rounded-tr-xs shadow-md border border-cyan-500/40">
+                  <div className="flex items-center gap-1.5 text-[10px] text-cyan-600 font-semibold mb-1">
                     <Radio className="w-3 h-3 animate-pulse" />
                     <span>Speaking live...</span>
                   </div>
                   <div className="italic text-neutral-900">{liveTranscript.user}</div>
                 </div>
-                <div className="w-8 h-8 rounded-xl bg-amber-500 text-neutral-950 flex items-center justify-center text-xs font-bold shrink-0 shadow-sm mt-0.5">
+                <div className="w-8 h-8 rounded-xl bg-cyan-500 text-neutral-950 flex items-center justify-center text-xs font-bold shrink-0 shadow-sm mt-0.5">
                   {(user?.display_name || user?.email || "U").charAt(0).toUpperCase()}
                 </div>
               </div>
@@ -324,21 +324,21 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
             {/* Live Assistant Voice Streaming Message */}
             {isVoiceActive && liveTranscript.assistant && (
               <div className="flex gap-3 justify-start animate-fadeIn">
-                <div className="w-8 h-8 rounded-xl bg-neutral-900 border border-amber-500/40 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                <div className="w-8 h-8 rounded-xl bg-neutral-900 border border-cyan-500/40 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                   <AngelLogo size="xs" />
                 </div>
 
-                <div className="relative max-w-[85%] sm:max-w-[80%] rounded-2xl p-4 sm:p-5 text-sm leading-relaxed bg-[#131314] text-neutral-100 border border-amber-500/50 rounded-tl-xs shadow-lg">
+                <div className="relative max-w-[85%] sm:max-w-[80%] rounded-2xl p-4 sm:p-5 text-sm leading-relaxed bg-[#131314] text-neutral-100 border border-cyan-500/50 rounded-tl-xs shadow-lg">
                   <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-neutral-800/80 text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold tracking-wider uppercase text-amber-500 text-[11px]">
+                      <span className="font-bold tracking-wider uppercase text-cyan-500 text-[11px]">
                         ANGEL
                       </span>
-                      <span className="text-[10px] text-amber-400 font-medium">
+                      <span className="text-[10px] text-cyan-400 font-medium">
                         (Live Voice: {selectedVoice.name})
                       </span>
                     </div>
-                    <span className="inline-block w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+                    <span className="inline-block w-2 h-2 rounded-full bg-cyan-500 animate-ping" />
                   </div>
 
                   <div className="markdown-body prose prose-invert max-w-none text-sm space-y-3 font-normal leading-relaxed text-neutral-200">
@@ -351,16 +351,16 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
             {/* Live Text Streaming Message Block */}
             {isStreaming && (
               <div id="message-streaming" className="flex gap-3 justify-start animate-fadeIn">
-                <div className="w-8 h-8 rounded-xl bg-neutral-900 border border-amber-500/40 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                <div className="w-8 h-8 rounded-xl bg-neutral-900 border border-cyan-500/40 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                   <AngelLogo size="xs" />
                 </div>
 
                 <div className="relative max-w-[85%] sm:max-w-[80%] rounded-2xl p-4 sm:p-5 text-sm leading-relaxed bg-[#131314] text-neutral-100 border border-neutral-800/90 rounded-tl-xs shadow-md">
                   <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-neutral-800/80 text-xs">
-                    <span className="font-bold tracking-wider uppercase text-amber-500 text-[11px]">
+                    <span className="font-bold tracking-wider uppercase text-cyan-500 text-[11px]">
                       ANGEL
                     </span>
-                    <span className="inline-block w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+                    <span className="inline-block w-2 h-2 rounded-full bg-cyan-500 animate-ping" />
                   </div>
 
                   {streamingMessage ? (
@@ -369,7 +369,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                     </div>
                   ) : (
                     <div className="flex items-center gap-2 text-neutral-400 py-1 text-xs">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-spin" />
+                      <Sparkles className="w-3.5 h-3.5 text-cyan-500 animate-spin" />
                       <span>Angel is thinking...</span>
                     </div>
                   )}

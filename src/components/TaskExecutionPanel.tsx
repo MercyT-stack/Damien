@@ -73,7 +73,7 @@ export const TaskExecutionPanel: React.FC = () => {
       case "PLANNING":
         return <span className="text-blue-400 font-semibold">PLANNING EXECUTION</span>;
       case "EXECUTING":
-        return <span className="text-amber-400 font-semibold">ANGEL IS EXECUTING</span>;
+        return <span className="text-cyan-400 font-semibold">ANGEL IS EXECUTING</span>;
       case "VERIFYING":
         return <span className="text-purple-400 font-semibold">VERIFYING QUALITY</span>;
       case "PAUSED":
@@ -85,7 +85,7 @@ export const TaskExecutionPanel: React.FC = () => {
       case "FAILED":
         return <span className="text-red-400 font-semibold">TASK FAILED</span>;
       case "PARTIAL_SUCCESS":
-        return <span className="text-amber-300 font-semibold">PARTIALLY COMPLETED</span>;
+        return <span className="text-cyan-300 font-semibold">PARTIALLY COMPLETED</span>;
       default:
         return <span className="text-neutral-300 font-semibold">TASK QUEUED</span>;
     }
@@ -99,7 +99,7 @@ export const TaskExecutionPanel: React.FC = () => {
       {/* Header Bar */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-500">
+          <div className="w-8 h-8 rounded-xl bg-cyan-500/10 dark:bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-500">
             {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
           </div>
           <div>
@@ -168,7 +168,7 @@ export const TaskExecutionPanel: React.FC = () => {
               ? "bg-rose-500"
               : status === "VERIFYING"
               ? "bg-purple-500"
-              : "bg-gradient-to-r from-amber-500 to-amber-300"
+              : "bg-gradient-to-r from-cyan-500 to-cyan-300"
           }`}
           style={{ width: `${Math.max(5, progressPercent)}%` }}
         />
@@ -176,16 +176,16 @@ export const TaskExecutionPanel: React.FC = () => {
 
       {/* Sensitive Action Approval Alert Banner */}
       {activeActionPreview && (
-        <div className="mt-3 p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700/60 rounded-xl flex items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300">
-            <ShieldAlert className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
+        <div className="mt-3 p-3 bg-cyan-50 dark:bg-cyan-950/40 border border-cyan-300 dark:border-cyan-700/60 rounded-xl flex items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2 text-cyan-800 dark:text-cyan-300">
+            <ShieldAlert className="w-4 h-4 shrink-0 text-cyan-600 dark:text-cyan-400" />
             <span>
               <strong>Action Confirmation Required:</strong> {activeActionPreview.title}
             </span>
           </div>
           <button
             onClick={() => setActiveActionPreview(activeActionPreview)}
-            className="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-medium shadow-sm transition"
+            className="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-medium shadow-sm transition"
           >
             Review & Approve
           </button>
@@ -208,26 +208,26 @@ export const TaskExecutionPanel: React.FC = () => {
                   key={step.id}
                   className={`flex flex-col p-2 rounded-xl text-xs transition-all border ${
                     isCurrent
-                      ? "bg-amber-500/10 dark:bg-amber-500/20 text-amber-900 dark:text-amber-200 border-amber-500/40 shadow-sm"
+                      ? "bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-900 dark:text-cyan-200 border-cyan-500/40 shadow-sm"
                       : isCompleted
                       ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 border-emerald-500/20"
                       : isStepFailed
                       ? "bg-rose-50 dark:bg-rose-950/20 text-rose-800 dark:text-rose-300 border-rose-500/30"
                       : isWaiting
-                      ? "bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 border-amber-500/30"
+                      ? "bg-cyan-50 dark:bg-cyan-950/30 text-cyan-800 dark:text-cyan-300 border-cyan-500/30"
                       : "bg-neutral-50 dark:bg-neutral-800/60 text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-1.5">
                     <div className="flex items-center gap-1.5 font-medium truncate">
                       {isCurrent ? (
-                        <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500 shrink-0" />
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-cyan-500 shrink-0" />
                       ) : isCompleted ? (
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                       ) : isStepFailed ? (
                         <XCircle className="w-3.5 h-3.5 text-rose-500 shrink-0" />
                       ) : isWaiting ? (
-                        <ShieldAlert className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                        <ShieldAlert className="w-3.5 h-3.5 text-cyan-500 shrink-0" />
                       ) : (
                         <Circle className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
                       )}
@@ -294,7 +294,7 @@ export const TaskExecutionPanel: React.FC = () => {
                 User Modifications (Side Chat):
               </span>
               {sideNotes.map((note, nIdx) => (
-                <div key={nIdx} className="text-amber-700 dark:text-amber-300/90 pl-1 border-l-2 border-amber-500/50">
+                <div key={nIdx} className="text-cyan-700 dark:text-cyan-300/90 pl-1 border-l-2 border-cyan-500/50">
                   "{note}"
                 </div>
               ))}
@@ -309,12 +309,12 @@ export const TaskExecutionPanel: React.FC = () => {
                 value={sideNoteText}
                 onChange={(e) => setSideNoteText(e.target.value)}
                 placeholder="Steer active task (e.g. 'Use 5 slides', 'Focus on Nigerian pricing')..."
-                className="flex-1 bg-neutral-50 dark:bg-neutral-950/80 border border-neutral-300 dark:border-neutral-800 rounded-xl px-3 py-1.5 text-xs text-neutral-900 dark:text-neutral-200 placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition"
+                className="flex-1 bg-neutral-50 dark:bg-neutral-950/80 border border-neutral-300 dark:border-neutral-800 rounded-xl px-3 py-1.5 text-xs text-neutral-900 dark:text-neutral-200 placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none focus:border-cyan-500 transition"
               />
               <button
                 type="submit"
                 disabled={!sideNoteText.trim()}
-                className="p-1.5 bg-amber-500 hover:bg-amber-600 disabled:opacity-40 text-white rounded-xl transition"
+                className="p-1.5 bg-cyan-500 hover:bg-cyan-600 disabled:opacity-40 text-white rounded-xl transition"
                 title="Send steering note"
               >
                 <Send className="w-3.5 h-3.5" />

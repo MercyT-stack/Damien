@@ -72,7 +72,7 @@ export const ArtifactViewerModal: React.FC = () => {
       case "code":
         return <Code2 className="w-5 h-5 text-emerald-400" />;
       case "spreadsheet":
-        return <Table className="w-5 h-5 text-amber-400" />;
+        return <Table className="w-5 h-5 text-cyan-400" />;
       case "research":
         return <BookOpen className="w-5 h-5 text-purple-400" />;
       case "diagram":
@@ -80,7 +80,7 @@ export const ArtifactViewerModal: React.FC = () => {
       case "presentation":
         return <Presentation className="w-5 h-5 text-rose-400" />;
       default:
-        return <Sparkles className="w-5 h-5 text-amber-400" />;
+        return <Sparkles className="w-5 h-5 text-cyan-400" />;
     }
   };
 
@@ -100,7 +100,7 @@ export const ArtifactViewerModal: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-500">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-500">
                   {type.toUpperCase()} ARTIFACT
                 </span>
                 <span className="text-[11px] text-neutral-400">
@@ -117,7 +117,7 @@ export const ArtifactViewerModal: React.FC = () => {
               <button
                 onClick={() => setTabMode("preview")}
                 className={`px-2.5 py-1 rounded-md transition-colors ${
-                  tabMode === "preview" ? "bg-amber-500 text-neutral-950 font-semibold" : "text-neutral-300 hover:text-white"
+                  tabMode === "preview" ? "bg-cyan-500 text-neutral-950 font-semibold" : "text-neutral-300 hover:text-white"
                 }`}
               >
                 Preview
@@ -125,7 +125,7 @@ export const ArtifactViewerModal: React.FC = () => {
               <button
                 onClick={() => setTabMode("raw")}
                 className={`px-2.5 py-1 rounded-md transition-colors ${
-                  tabMode === "raw" ? "bg-amber-500 text-neutral-950 font-semibold" : "text-neutral-300 hover:text-white"
+                  tabMode === "raw" ? "bg-cyan-500 text-neutral-950 font-semibold" : "text-neutral-300 hover:text-white"
                 }`}
               >
                 Raw Text
@@ -162,7 +162,7 @@ export const ArtifactViewerModal: React.FC = () => {
         <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4">
           {summary && (
             <div className="p-3 rounded-xl bg-neutral-950/50 border border-neutral-800/80 text-xs text-neutral-300 leading-relaxed">
-              <span className="font-semibold text-amber-400/90 mr-1.5">Overview:</span>
+              <span className="font-semibold text-cyan-400/90 mr-1.5">Overview:</span>
               {summary}
             </div>
           )}
@@ -200,7 +200,7 @@ export const ArtifactViewerModal: React.FC = () => {
                       placeholder="Filter rows..."
                       value={tableSearch}
                       onChange={(e) => setTableSearch(e.target.value)}
-                      className="w-full pl-8 pr-3 py-1.5 bg-neutral-950 border border-neutral-800 rounded-xl text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-amber-500/60"
+                      className="w-full pl-8 pr-3 py-1.5 bg-neutral-950 border border-neutral-800 rounded-xl text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-cyan-500/60"
                     />
                   </div>
 
@@ -241,7 +241,7 @@ export const ArtifactViewerModal: React.FC = () => {
                     <span>Language: <strong className="text-neutral-200 font-mono">{metadata?.language || "typescript"}</strong></span>
                     <span>Ready for production integration</span>
                   </div>
-                  <pre className="p-4 rounded-xl bg-neutral-950 border border-neutral-800 font-mono text-xs text-amber-200/90 whitespace-pre-wrap leading-relaxed overflow-x-auto">
+                  <pre className="p-4 rounded-xl bg-neutral-950 border border-neutral-800 font-mono text-xs text-cyan-200/90 whitespace-pre-wrap leading-relaxed overflow-x-auto">
                     {content}
                   </pre>
                 </div>

@@ -398,7 +398,7 @@ export class VoiceIdentityService {
 
     const hash = engine.generateVoiceprintHash(mergedCharacteristics);
 
-    const colors = ["#F59E0B", "#3B82F6", "#10B981", "#8B5CF6", "#EC4899"];
+    const colors = ["#06B6D4", "#3B82F6", "#10B981", "#8B5CF6", "#EC4899"];
     const selectedColor = colors[this.settings.profiles.length % colors.length];
 
     const isPrimary = role === "owner" || this.settings.profiles.length === 0;

@@ -365,7 +365,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
       case "spreadsheet":
         return <FileSpreadsheet className="w-4 h-4 text-emerald-500" />;
       case "code":
-        return <FileCode className="w-4 h-4 text-amber-500" />;
+        return <FileCode className="w-4 h-4 text-cyan-500" />;
       case "image":
         return <ImageIcon className="w-4 h-4 text-blue-500" />;
       default:
@@ -404,7 +404,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
       {attachedDoc && (
         <div
           id="attached-document-chip"
-          className="mb-2.5 p-2.5 px-3.5 rounded-xl bg-white dark:bg-neutral-900 border border-amber-500/40 shadow-lg flex items-center justify-between gap-3 animate-fadeIn"
+          className="mb-2.5 p-2.5 px-3.5 rounded-xl bg-white dark:bg-neutral-900 border border-cyan-500/40 shadow-lg flex items-center justify-between gap-3 animate-fadeIn"
         >
           <div className="flex items-center gap-3 min-w-0">
             {attachedDoc.isImage ? (
@@ -444,7 +444,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
       {isSTTActive && (
         <div
           id="stt-active-panel"
-          className="mb-2.5 p-3.5 rounded-2xl bg-neutral-900 text-white border border-amber-500/40 shadow-xl flex flex-col gap-2.5 animate-fadeIn"
+          className="mb-2.5 p-3.5 rounded-2xl bg-neutral-900 text-white border border-cyan-500/40 shadow-xl flex flex-col gap-2.5 animate-fadeIn"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -468,7 +468,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
               <button
                 id="btn-stt-done"
                 onClick={() => handleStopSTT(true)}
-                className="flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-lg bg-amber-500 text-neutral-950 hover:bg-amber-400 transition"
+                className="flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-lg bg-cyan-500 text-neutral-950 hover:bg-cyan-400 transition"
               >
                 <Check className="w-3.5 h-3.5 stroke-[2.5]" />
                 <span>Done</span>
@@ -526,7 +526,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
                   }}
                   className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
                 >
-                  <Paperclip className="w-4 h-4 text-amber-500 shrink-0" />
+                  <Paperclip className="w-4 h-4 text-cyan-500 shrink-0" />
                   <div className="text-left">
                     <span className="block font-medium">Attach Document or File</span>
                     <span className="text-[10px] text-neutral-400">PDF, DOCX, CSV, TXT, code, images</span>
@@ -579,7 +579,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
                   }}
                   className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
                 >
-                  <Table className="w-4 h-4 text-amber-500 shrink-0" />
+                  <Table className="w-4 h-4 text-cyan-500 shrink-0" />
                   <div className="text-left">
                     <span className="block font-medium">Spreadsheet & Analysis</span>
                     <span className="text-[10px] text-neutral-400">Data tables, CSV & formulas</span>
@@ -697,7 +697,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
                   }}
                   className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs font-medium transition ${
                     isSelected
-                      ? "bg-amber-500/10 text-amber-900 dark:text-amber-300 font-semibold"
+                      ? "bg-cyan-500/10 text-cyan-900 dark:text-cyan-300 font-semibold"
                       : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                   }`}
                 >
@@ -721,13 +721,13 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
           <div className="flex items-center justify-between">
             {/* Live Indicator + Voice Identity */}
             <div className="flex items-center gap-2.5">
-              <div className="relative flex items-center justify-center p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30">
-                <Radio className="w-4 h-4 text-amber-400" />
+              <div className="relative flex items-center justify-center p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                <Radio className="w-4 h-4 text-cyan-400" />
               </div>
               <div className="flex flex-col">
                 <span className="text-xs font-semibold text-neutral-100 flex items-center gap-1.5">
                   <span>Angel Live Voice</span>
-                  <span className="text-[10px] text-amber-400 font-normal">
+                  <span className="text-[10px] text-cyan-400 font-normal">
                     ({selectedVoice.name})
                   </span>
                 </span>
@@ -758,7 +758,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
                 title={isPaused ? "Resume Live Session" : "Pause Live Session"}
                 aria-label="Pause or resume live session"
               >
-                {isPaused ? <Play className="w-4 h-4 text-amber-400" /> : <Pause className="w-4 h-4" />}
+                {isPaused ? <Play className="w-4 h-4 text-cyan-400" /> : <Pause className="w-4 h-4" />}
               </button>
 
               <button
@@ -790,11 +790,11 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
 
               {liveTranscript.assistant && (
                 <div className="flex gap-2.5 justify-start">
-                  <div className="w-7 h-7 rounded-xl bg-neutral-900 border border-amber-500/40 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-7 h-7 rounded-xl bg-neutral-900 border border-cyan-500/40 flex items-center justify-center shrink-0 mt-0.5">
                     <AngelLogo size="xs" />
                   </div>
                   <div className="flex-1 p-3.5 rounded-2xl bg-[#131314] border border-neutral-800 text-xs">
-                    <div className="font-semibold text-amber-500 uppercase tracking-wider text-[11px]">
+                    <div className="font-semibold text-cyan-500 uppercase tracking-wider text-[11px]">
                       ANGEL
                     </div>
                     <div className="border-b border-neutral-800/80 my-2" />
@@ -821,12 +821,12 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
                   }
                 }}
                 placeholder="Type a message into live conversation..."
-                className="flex-1 px-3 py-1.5 text-xs bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-100 placeholder:text-neutral-500 focus:outline-hidden focus:border-amber-500/60"
+                className="flex-1 px-3 py-1.5 text-xs bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-100 placeholder:text-neutral-500 focus:outline-hidden focus:border-cyan-500/60"
               />
               <button
                 onClick={handleSend}
                 disabled={!text.trim()}
-                className="p-1.5 rounded-xl bg-amber-500 text-neutral-950 font-bold disabled:opacity-40"
+                className="p-1.5 rounded-xl bg-cyan-500 text-neutral-950 font-bold disabled:opacity-40"
               >
                 <ArrowUp className="w-3.5 h-3.5" />
               </button>
@@ -835,7 +835,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
         </div>
       ) : (
         /* CLEAN CHAT BAR: [ + ] [ Input Textarea ] [ Mic ] [ Angel Live ] [ Intelligence ] [ Send ] */
-        <div className="relative flex items-end gap-1.5 sm:gap-2 p-2 sm:p-2.5 rounded-2xl bg-neutral-100/90 dark:bg-neutral-900/90 border border-neutral-300/80 dark:border-neutral-800/80 focus-within:border-amber-500/60 dark:focus-within:border-amber-500/60 focus-within:ring-2 focus-within:ring-amber-500/10 shadow-lg transition-all duration-200">
+        <div className="relative flex items-end gap-1.5 sm:gap-2 p-2 sm:p-2.5 rounded-2xl bg-neutral-100/90 dark:bg-neutral-900/90 border border-neutral-300/80 dark:border-neutral-800/80 focus-within:border-cyan-500/60 dark:focus-within:border-cyan-500/60 focus-within:ring-2 focus-within:ring-cyan-500/10 shadow-lg transition-all duration-200">
           {/* [ + ] Tool/File Attachment Entry Point (Attachments live exclusively here) */}
           <button
             id="btn-composer-plus"
@@ -843,7 +843,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
             onClick={() => setShowToolsMenu(!showToolsMenu)}
             className={`p-2 rounded-xl transition-all shrink-0 ${
               showToolsMenu
-                ? "bg-amber-500/20 text-amber-600 dark:text-amber-400 rotate-45"
+                ? "bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 rotate-45"
                 : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60"
             }`}
             title="Tools & Attachments"
@@ -901,7 +901,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
             title={`Intelligence: ${intelligenceLevel}`}
             aria-label="Select intelligence level"
           >
-            <Sparkles className="w-4 h-4 text-amber-500" />
+            <Sparkles className="w-4 h-4 text-cyan-500" />
           </button>
 
           {/* [ Primary Dynamic Action: Live (when empty) vs Send (when typed) ] */}
@@ -923,13 +923,13 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
               type="button"
               onClick={() => stopVoiceSession(true)}
               disabled={isStreaming}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/20 hover:bg-rose-500/20 border border-amber-500/50 hover:border-rose-500/50 text-amber-400 hover:text-rose-300 font-semibold text-xs transition-all duration-200 shadow-xs shrink-0 group"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/20 hover:bg-rose-500/20 border border-cyan-500/50 hover:border-rose-500/50 text-cyan-400 hover:text-rose-300 font-semibold text-xs transition-all duration-200 shadow-xs shrink-0 group"
               title="Live Chat Active — Click to End ('Angel, end conversation')"
               aria-label="End Live Chat"
             >
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
               </span>
               <span className="tracking-wide">Live Active</span>
             </button>
@@ -939,13 +939,13 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
               type="button"
               onClick={startVoiceSession}
               disabled={isStreaming}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-600/20 hover:from-amber-500/30 hover:to-amber-600/30 border border-amber-500/40 text-neutral-900 dark:text-neutral-100 font-semibold text-xs transition-all duration-200 shadow-xs hover:shadow-md disabled:opacity-50 shrink-0 group"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/20 to-cyan-600/20 hover:from-cyan-500/30 hover:to-cyan-600/30 border border-cyan-500/40 text-neutral-900 dark:text-neutral-100 font-semibold text-xs transition-all duration-200 shadow-xs hover:shadow-md disabled:opacity-50 shrink-0 group"
               title="Start Live Chat with Angel (Say 'Hey Angel')"
               aria-label="Start Live Chat session"
             >
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
               </span>
               <span className="tracking-wide">Live</span>
             </button>

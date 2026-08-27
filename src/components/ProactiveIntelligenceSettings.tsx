@@ -80,7 +80,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
         <div className="flex items-center gap-3.5">
           <div
             className={`p-2.5 rounded-xl ${
-              prefs.enabled ? "bg-amber-500/20 text-amber-300" : "bg-neutral-700/50 text-neutral-400"
+              prefs.enabled ? "bg-cyan-500/20 text-cyan-300" : "bg-neutral-700/50 text-neutral-400"
             }`}
           >
             <Sparkles className="w-5 h-5" />
@@ -107,7 +107,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
           className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition ${
             prefs.enabled
               ? "bg-neutral-700 text-neutral-200 hover:bg-neutral-600"
-              : "bg-amber-500 text-neutral-950 hover:bg-amber-400"
+              : "bg-cyan-500 text-neutral-950 hover:bg-cyan-400"
           }`}
         >
           {prefs.enabled ? "Pause updates" : "Enable proactivity"}
@@ -118,7 +118,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
       <div className="p-4 rounded-2xl bg-neutral-800/25 border border-neutral-800 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-400/90 flex items-center gap-1.5">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-cyan-400/90 flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5" />
               Scheduled Briefings
             </h3>
@@ -138,13 +138,13 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
           <div className="p-3 rounded-xl bg-neutral-900/60 border border-neutral-800 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-white flex items-center gap-1.5">
-                <Sun className="w-3.5 h-3.5 text-amber-400" /> Morning Briefing
+                <Sun className="w-3.5 h-3.5 text-cyan-400" /> Morning Briefing
               </span>
               <input
                 type="checkbox"
                 checked={prefs.morningBriefingEnabled}
                 onChange={(e) => updatePreference("morningBriefingEnabled", e.target.checked)}
-                className="w-4 h-4 accent-amber-500 rounded"
+                className="w-4 h-4 accent-cyan-500 rounded"
               />
             </div>
             <div className="flex items-center justify-between text-xs text-neutral-400 pt-1">
@@ -168,7 +168,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
                 type="checkbox"
                 checked={prefs.eveningBriefingEnabled}
                 onChange={(e) => updatePreference("eveningBriefingEnabled", e.target.checked)}
-                className="w-4 h-4 accent-amber-500 rounded"
+                className="w-4 h-4 accent-cyan-500 rounded"
               />
             </div>
             <div className="flex items-center justify-between text-xs text-neutral-400 pt-1">
@@ -186,7 +186,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
 
       {/* Quiet Hours & Anti-Spam Boundaries */}
       <div className="p-4 rounded-2xl bg-neutral-800/25 border border-neutral-800 space-y-3">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-400/90 flex items-center gap-1.5">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-cyan-400/90 flex items-center gap-1.5">
           <Shield className="w-3.5 h-3.5" />
           Quiet Hours & Boundaries
         </h3>
@@ -200,7 +200,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
             type="checkbox"
             checked={prefs.quietHoursEnabled}
             onChange={(e) => updatePreference("quietHoursEnabled", e.target.checked)}
-            className="w-4 h-4 accent-amber-500 rounded"
+            className="w-4 h-4 accent-cyan-500 rounded"
           />
         </div>
 
@@ -230,7 +230,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
 
       {/* Topics & Monitored Domains */}
       <div className="p-4 rounded-2xl bg-neutral-800/25 border border-neutral-800 space-y-3">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-400/90 flex items-center gap-1.5">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-cyan-400/90 flex items-center gap-1.5">
           <Globe className="w-3.5 h-3.5" />
           Topics & Global Awareness
         </h3>
@@ -255,7 +255,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
                 type="checkbox"
                 checked={prefs.topics[t.id as keyof ProactivePreferences["topics"]] ?? true}
                 onChange={(e) => updateTopic(t.id as keyof ProactivePreferences["topics"], e.target.checked)}
-                className="w-3.5 h-3.5 accent-amber-500 rounded"
+                className="w-3.5 h-3.5 accent-cyan-500 rounded"
               />
             </label>
           ))}
@@ -265,7 +265,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
       {/* Followed Regions & Cultural Context (Stage 9) */}
       <div className="p-4 rounded-2xl bg-neutral-800/25 border border-neutral-800 space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-400/90 flex items-center gap-1.5">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-cyan-400/90 flex items-center gap-1.5">
             <MapPin className="w-3.5 h-3.5" />
             Followed Regions & Cultural Context
           </h3>
@@ -288,7 +288,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
                 }}
                 className={`px-2.5 py-1 rounded-lg text-xs font-medium transition ${
                   isFollowed
-                    ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
                     : "bg-neutral-900 text-neutral-400 border border-neutral-800 hover:text-white"
                 }`}
               >
@@ -317,7 +317,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
       <div className="p-4 rounded-2xl bg-neutral-800/25 border border-neutral-800 space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-400/90 flex items-center gap-1.5">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-cyan-400/90 flex items-center gap-1.5">
               <Cpu className="w-3.5 h-3.5" />
               System Upgrade & Architecture Proposals
             </h3>
@@ -346,7 +346,7 @@ export const ProactiveIntelligenceSettings: React.FC = () => {
               <div className="text-neutral-400 text-[11px] leading-relaxed">{u.whatChanged}</div>
               <div className="flex items-center justify-between pt-1 border-t border-neutral-800/60 text-[11px]">
                 <span className="text-neutral-500">{u.potentialBenefit}</span>
-                <span className="text-amber-300/90 font-medium">{u.recommendedAction}</span>
+                <span className="text-cyan-300/90 font-medium">{u.recommendedAction}</span>
               </div>
             </div>
           ))}

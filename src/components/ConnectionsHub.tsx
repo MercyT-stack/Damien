@@ -123,7 +123,7 @@ export const ConnectionsHub: React.FC<ConnectionsHubProps> = () => {
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-sm font-semibold text-white">External World & Service Connections</h2>
-            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
               Stage 6 Universal Ecosystem
             </span>
           </div>
@@ -166,7 +166,7 @@ export const ConnectionsHub: React.FC<ConnectionsHubProps> = () => {
             onClick={() => setSelectedCategory(cat.id)}
             className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition ${
               selectedCategory === cat.id
-                ? "bg-amber-500 text-neutral-950 font-semibold shadow-xs"
+                ? "bg-cyan-500 text-neutral-950 font-semibold shadow-xs"
                 : "bg-neutral-800/60 text-neutral-400 hover:text-white hover:bg-neutral-800"
             }`}
           >
@@ -184,7 +184,7 @@ export const ConnectionsHub: React.FC<ConnectionsHubProps> = () => {
               key={integ.id}
               className={`p-4 rounded-2xl border transition relative flex flex-col justify-between ${
                 isConnected
-                  ? "bg-neutral-800/50 border-amber-500/30 hover:border-amber-500/50 shadow-sm"
+                  ? "bg-neutral-800/50 border-cyan-500/30 hover:border-cyan-500/50 shadow-sm"
                   : "bg-neutral-900/40 border-neutral-800 hover:border-neutral-700/80"
               }`}
             >
@@ -195,7 +195,7 @@ export const ConnectionsHub: React.FC<ConnectionsHubProps> = () => {
                     <div
                       className={`w-10 h-10 rounded-xl flex items-center justify-center border ${
                         isConnected
-                          ? "bg-amber-500/15 text-amber-400 border-amber-500/30"
+                          ? "bg-cyan-500/15 text-cyan-400 border-cyan-500/30"
                           : "bg-neutral-800 text-neutral-400 border-neutral-700"
                       }`}
                     >
@@ -242,7 +242,7 @@ export const ConnectionsHub: React.FC<ConnectionsHubProps> = () => {
                     </div>
                     <div className="flex items-center justify-between text-neutral-400">
                       <span>Active Scopes:</span>
-                      <span className="text-amber-400 font-medium">
+                      <span className="text-cyan-400 font-medium">
                         {integ.grantedScopes.length} granted
                       </span>
                     </div>
@@ -288,7 +288,7 @@ export const ConnectionsHub: React.FC<ConnectionsHubProps> = () => {
                   ) : (
                     <button
                       onClick={() => handleOpenConnect(integ)}
-                      className="px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-amber-500 text-neutral-950 hover:bg-amber-400 transition flex items-center gap-1.5 shadow-xs"
+                      className="px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-cyan-500 text-neutral-950 hover:bg-cyan-400 transition flex items-center gap-1.5 shadow-xs"
                     >
                       <Plug className="w-3.5 h-3.5" />
                       <span>Connect</span>
@@ -307,7 +307,7 @@ export const ConnectionsHub: React.FC<ConnectionsHubProps> = () => {
           <div className="w-full max-w-lg rounded-2xl bg-neutral-900 border border-neutral-800 shadow-2xl p-5 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-neutral-800">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/15 text-amber-400 flex items-center justify-center border border-amber-500/30">
+                <div className="w-8 h-8 rounded-lg bg-cyan-500/15 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
                   {getIcon(selectedInteg.icon)}
                 </div>
                 <div>
@@ -341,7 +341,7 @@ export const ConnectionsHub: React.FC<ConnectionsHubProps> = () => {
                 value={activeAccountInput}
                 onChange={(e) => setActiveAccountInput(e.target.value)}
                 placeholder="e.g. yourname@company.com"
-                className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-800 text-white border border-neutral-700 focus:border-amber-500 focus:outline-hidden"
+                className="w-full px-3 py-2 text-xs rounded-xl bg-neutral-800 text-white border border-neutral-700 focus:border-cyan-500 focus:outline-hidden"
               />
             </div>
 
@@ -363,7 +363,7 @@ export const ConnectionsHub: React.FC<ConnectionsHubProps> = () => {
                       onClick={() => toggleScope(scope.id)}
                       className={`p-3 rounded-xl border cursor-pointer transition flex items-start gap-3 ${
                         isChecked
-                          ? "bg-amber-500/10 border-amber-500/40 text-white"
+                          ? "bg-cyan-500/10 border-cyan-500/40 text-white"
                           : "bg-neutral-800/40 border-neutral-800 text-neutral-300 hover:border-neutral-700"
                       }`}
                     >
@@ -371,7 +371,7 @@ export const ConnectionsHub: React.FC<ConnectionsHubProps> = () => {
                         type="checkbox"
                         checked={isChecked}
                         onChange={() => {}}
-                        className="mt-0.5 accent-amber-500 rounded cursor-pointer"
+                        className="mt-0.5 accent-cyan-500 rounded cursor-pointer"
                       />
                       <div className="flex-1 text-xs">
                         <div className="flex items-center gap-2">
@@ -408,7 +408,7 @@ export const ConnectionsHub: React.FC<ConnectionsHubProps> = () => {
                 type="button"
                 disabled={isConnecting}
                 onClick={handleConfirmConnect}
-                className="px-4 py-1.5 text-xs font-semibold rounded-xl bg-amber-500 text-neutral-950 hover:bg-amber-400 transition"
+                className="px-4 py-1.5 text-xs font-semibold rounded-xl bg-cyan-500 text-neutral-950 hover:bg-cyan-400 transition"
               >
                 {isConnecting ? "Authorizing..." : "Save & Authorize"}
               </button>

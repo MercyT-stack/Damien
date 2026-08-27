@@ -28,7 +28,7 @@ export const AngelLiveBanner: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -16 }}
         id="angel-live-inchat-banner"
-        className="sticky top-0 z-30 mb-6 p-4 rounded-2xl bg-neutral-900/95 dark:bg-neutral-900/95 border border-amber-500/40 shadow-xl backdrop-blur-md text-neutral-100 transition-all duration-300"
+        className="sticky top-0 z-30 mb-6 p-4 rounded-2xl bg-neutral-900/95 dark:bg-neutral-900/95 border border-cyan-500/40 shadow-xl backdrop-blur-md text-neutral-100 transition-all duration-300"
       >
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           {/* Left: Emblem + Live Indicator & Rhythm Transmitter */}
@@ -46,7 +46,7 @@ export const AngelLiveBanner: React.FC = () => {
                     return (
                       <motion.span
                         key={idx}
-                        className="w-1 rounded-full bg-gradient-to-t from-amber-500 to-amber-300"
+                        className="w-1 rounded-full bg-gradient-to-t from-cyan-500 to-cyan-300"
                         animate={{ height }}
                         transition={{ duration: 0.1, ease: "easeOut" }}
                       />
@@ -55,7 +55,7 @@ export const AngelLiveBanner: React.FC = () => {
                 </div>
 
                 {wakeWordDetected && (
-                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-400 text-neutral-950 text-[10px] font-bold animate-bounce">
+                  <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-400 text-neutral-950 text-[10px] font-bold animate-bounce">
                     <Sparkles className="w-3 h-3" />
                     Wake Word Detected
                   </span>
@@ -64,18 +64,18 @@ export const AngelLiveBanner: React.FC = () => {
 
               <div className="text-xs text-neutral-300 mt-1 flex items-center gap-2">
                 <span>
-                  Voice: <strong className="text-amber-400 font-semibold">{selectedVoice.name}</strong>
+                  Voice: <strong className="text-cyan-400 font-semibold">{selectedVoice.name}</strong>
                 </span>
                 {isPaused && (
                   <>
                     <span className="text-neutral-500">•</span>
-                    <span className="text-amber-400/90 text-[11px] font-medium">Paused</span>
+                    <span className="text-cyan-400/90 text-[11px] font-medium">Paused</span>
                   </>
                 )}
                 {voiceState === "speaking" && !isPaused && (
                   <>
                     <span className="text-neutral-500">•</span>
-                    <span className="text-amber-300 text-[11px] font-medium">Speaking</span>
+                    <span className="text-cyan-300 text-[11px] font-medium">Speaking</span>
                   </>
                 )}
               </div>
@@ -96,7 +96,7 @@ export const AngelLiveBanner: React.FC = () => {
               }`}
               title={isMuted ? "Unmute Microphone" : "Mute Microphone"}
             >
-              {isMuted ? <MicOff className="w-4 h-4 text-rose-400" /> : <Mic className="w-4 h-4 text-amber-400" />}
+              {isMuted ? <MicOff className="w-4 h-4 text-rose-400" /> : <Mic className="w-4 h-4 text-cyan-400" />}
               <span className="hidden md:inline">{isMuted ? "Muted" : "Mute"}</span>
             </button>
 
@@ -108,7 +108,7 @@ export const AngelLiveBanner: React.FC = () => {
               className="p-2 rounded-xl text-xs font-semibold bg-neutral-800 text-neutral-200 border border-neutral-700 hover:bg-neutral-700 transition"
               title={isPaused ? "Resume Live Session" : "Pause Live Session"}
             >
-              {isPaused ? <Play className="w-4 h-4 text-amber-400" /> : <Pause className="w-4 h-4 text-neutral-300" />}
+              {isPaused ? <Play className="w-4 h-4 text-cyan-400" /> : <Pause className="w-4 h-4 text-neutral-300" />}
             </button>
 
             {/* End Conversation Button */}

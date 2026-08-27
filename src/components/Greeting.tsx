@@ -18,22 +18,22 @@ export const Greeting: React.FC<GreetingProps> = ({ onSelectPrompt }) => {
 
   const suggestionPrompts = [
     {
-      icon: <Lightbulb className="w-4 h-4 text-amber-500" />,
+      icon: <Lightbulb className="w-4 h-4 text-cyan-500" />,
       title: "Explore an Idea",
       prompt: "I'm thinking about a new strategy for my project. Help me analyze the trade-offs.",
     },
     {
-      icon: <Compass className="w-4 h-4 text-amber-500" />,
+      icon: <Compass className="w-4 h-4 text-cyan-500" />,
       title: "Plan & Structure",
       prompt: "Help me structure an end-to-end execution plan for launching an intelligent product.",
     },
     {
-      icon: <PenLine className="w-4 h-4 text-amber-500" />,
+      icon: <PenLine className="w-4 h-4 text-cyan-500" />,
       title: "Refine & Draft",
       prompt: "Draft an executive brief that communicates clarity, high conviction, and precision.",
     },
     {
-      icon: <Terminal className="w-4 h-4 text-amber-500" />,
+      icon: <Terminal className="w-4 h-4 text-cyan-500" />,
       title: "Technical Reasoning",
       prompt: "Explain how modern distributed systems handle strong consistency vs eventual consistency.",
     },
@@ -62,13 +62,13 @@ export const Greeting: React.FC<GreetingProps> = ({ onSelectPrompt }) => {
             key={idx}
             id={`btn-suggestion-${idx}`}
             onClick={() => onSelectPrompt(item.prompt)}
-            className="flex items-start gap-3 p-3.5 rounded-2xl bg-neutral-100/80 hover:bg-neutral-200/80 dark:bg-neutral-900/60 dark:hover:bg-neutral-800/80 border border-neutral-200/80 dark:border-neutral-800/80 hover:border-amber-500/40 dark:hover:border-amber-500/40 transition-all duration-150 group"
+            className="flex items-start gap-3 p-3.5 rounded-2xl bg-neutral-100/80 hover:bg-neutral-200/80 dark:bg-neutral-900/60 dark:hover:bg-neutral-800/80 border border-neutral-200/80 dark:border-neutral-800/80 hover:border-cyan-500/40 dark:hover:border-cyan-500/40 transition-all duration-150 group"
           >
             <div className="p-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700/60 shadow-xs shrink-0 group-hover:scale-105 transition-transform">
               {item.icon}
             </div>
             <div className="flex flex-col">
-              <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+              <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                 {item.title}
               </span>
               <span className="text-[11px] text-neutral-500 dark:text-neutral-400 line-clamp-2 mt-0.5 leading-snug">

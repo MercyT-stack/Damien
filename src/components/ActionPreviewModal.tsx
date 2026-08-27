@@ -41,7 +41,7 @@ export const ActionPreviewModal: React.FC<ActionPreviewModalProps> = ({
       case "publish":
         return <Share2 className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />;
       default:
-        return <ShieldAlert className="w-5 h-5 text-amber-500 dark:text-amber-400" />;
+        return <ShieldAlert className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />;
     }
   };
 
@@ -83,7 +83,7 @@ export const ActionPreviewModal: React.FC<ActionPreviewModalProps> = ({
             className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-medium ${
               isHighRisk
                 ? "bg-red-500/10 text-red-700 dark:text-red-300 border border-red-500/20"
-                : "bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20"
+                : "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 border border-cyan-500/20"
             }`}
           >
             <AlertTriangle className="w-3.5 h-3.5" />

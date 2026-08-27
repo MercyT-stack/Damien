@@ -33,13 +33,13 @@ export const PermissionRequestModal: React.FC = () => {
               className={`w-10 h-10 rounded-xl flex items-center justify-center ${
                 isHighRisk
                   ? "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                  : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                  : "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
               }`}
             >
               {isHighRisk ? <ShieldAlert className="w-5 h-5" /> : <ShieldCheck className="w-5 h-5" />}
             </div>
             <div>
-              <span className="text-[11px] font-bold tracking-wider uppercase text-amber-500 block">
+              <span className="text-[11px] font-bold tracking-wider uppercase text-cyan-500 block">
                 SECURITY & PERMISSION REQUIRED
               </span>
               <h3 className="text-base font-semibold text-white">{toolName}</h3>
@@ -56,7 +56,7 @@ export const PermissionRequestModal: React.FC = () => {
 
         {/* Reason / Explanation */}
         <div className="bg-neutral-950/60 border border-neutral-800/80 rounded-xl p-3.5 text-xs text-neutral-300 space-y-1.5">
-          <div className="flex items-center gap-1.5 text-amber-400/90 font-medium">
+          <div className="flex items-center gap-1.5 text-cyan-400/90 font-medium">
             <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
             <span>Angel requests authorization</span>
           </div>
@@ -82,7 +82,7 @@ export const PermissionRequestModal: React.FC = () => {
 
         {/* Temporary Access Notice */}
         <div className="flex items-center gap-2 text-[11px] text-neutral-400">
-          <Clock className="w-3.5 h-3.5 text-amber-400/80 shrink-0" />
+          <Clock className="w-3.5 h-3.5 text-cyan-400/80 shrink-0" />
           <span>You maintain complete control. Access can be revoked anytime in Settings.</span>
         </div>
 
@@ -93,12 +93,12 @@ export const PermissionRequestModal: React.FC = () => {
               onClick={() => grantPermission(toolId, "once")}
               className="px-3.5 py-2.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-medium border border-neutral-700/80 transition-colors flex items-center justify-center gap-1.5"
             >
-              <Clock className="w-3.5 h-3.5 text-amber-400" />
+              <Clock className="w-3.5 h-3.5 text-cyan-400" />
               <span>Allow Once</span>
             </button>
             <button
               onClick={() => grantPermission(toolId, "session")}
-              className="px-3.5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 text-xs font-semibold shadow-sm transition-colors flex items-center justify-center gap-1.5"
+              className="px-3.5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-neutral-950 text-xs font-semibold shadow-sm transition-colors flex items-center justify-center gap-1.5"
             >
               <CheckCircle2 className="w-3.5 h-3.5 text-neutral-950" />
               <span>Allow Session</span>

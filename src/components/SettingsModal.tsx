@@ -340,7 +340,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                       : "text-neutral-400 hover:text-neutral-200 hover:bg-neutral-800/50"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? "text-amber-400" : "text-neutral-400"}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? "text-cyan-400" : "text-neutral-400"}`} />
                   <span className="truncate">{item.label}</span>
                 </button>
               );
@@ -497,7 +497,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                 {/* Master Memory Switch & Diagnostic Banner */}
                 <div className="p-4 rounded-2xl bg-neutral-800/40 border border-neutral-700/60 flex items-center justify-between">
                   <div className="flex items-center gap-3.5">
-                    <div className={`p-2.5 rounded-xl ${isMemoryEnabled ? "bg-amber-500/20 text-amber-300" : "bg-neutral-700/50 text-neutral-400"}`}>
+                    <div className={`p-2.5 rounded-xl ${isMemoryEnabled ? "bg-cyan-500/20 text-cyan-300" : "bg-neutral-700/50 text-neutral-400"}`}>
                       <BrainCircuit className="w-5 h-5" />
                     </div>
                     <div>
@@ -520,7 +520,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                     className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition ${
                       isMemoryEnabled
                         ? "bg-neutral-700 text-neutral-200 hover:bg-neutral-600"
-                        : "bg-amber-500 text-neutral-950 hover:bg-amber-400"
+                        : "bg-cyan-500 text-neutral-950 hover:bg-cyan-400"
                     }`}
                   >
                     {isMemoryEnabled ? "Pause memory" : "Enable memory"}
@@ -529,7 +529,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
 
                 {/* User Personalization Profile */}
                 <form onSubmit={handleSavePersonalization} className="space-y-4 p-4 rounded-2xl bg-neutral-800/25 border border-neutral-800">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-400/90">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-cyan-400/90">
                     User Profile & Custom Persona
                   </h3>
 
@@ -543,7 +543,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                         value={preferredName}
                         onChange={(e) => setPreferredName(e.target.value)}
                         placeholder="e.g. Mercy, Alex, Dr. Carter"
-                        className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/60 text-white placeholder-neutral-500 border border-neutral-700/60 focus:border-amber-500 focus:outline-hidden"
+                        className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/60 text-white placeholder-neutral-500 border border-neutral-700/60 focus:border-cyan-500 focus:outline-hidden"
                       />
                     </div>
 
@@ -556,7 +556,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                         value={occupation}
                         onChange={(e) => setOccupation(e.target.value)}
                         placeholder="e.g. Full-stack Engineer, Product Designer"
-                        className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/60 text-white placeholder-neutral-500 border border-neutral-700/60 focus:border-amber-500 focus:outline-hidden"
+                        className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/60 text-white placeholder-neutral-500 border border-neutral-700/60 focus:border-cyan-500 focus:outline-hidden"
                       />
                     </div>
                   </div>
@@ -579,7 +579,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                           onClick={() => setCommStyle(style.id)}
                           className={`py-1.5 px-2 rounded-lg text-xs font-medium border text-center transition ${
                             commStyle === style.id
-                              ? "bg-amber-500/20 border-amber-500/80 text-amber-200 font-semibold"
+                              ? "bg-cyan-500/20 border-cyan-500/80 text-cyan-200 font-semibold"
                               : "bg-neutral-800/40 border-neutral-700/60 text-neutral-400 hover:border-neutral-600"
                           }`}
                         >
@@ -598,7 +598,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                       value={interestsInput}
                       onChange={(e) => setInterestsInput(e.target.value)}
                       placeholder="e.g. AI architecture, UI design, distributed systems"
-                      className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/60 text-white placeholder-neutral-500 border border-neutral-700/60 focus:border-amber-500 focus:outline-hidden"
+                      className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/60 text-white placeholder-neutral-500 border border-neutral-700/60 focus:border-cyan-500 focus:outline-hidden"
                     />
                   </div>
 
@@ -611,7 +611,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                       value={customInstructions}
                       onChange={(e) => setCustomInstructions(e.target.value)}
                       placeholder="Provide specific formatting preferences, guidelines, or tone instructions..."
-                      className="w-full p-2.5 text-xs rounded-xl bg-neutral-800/60 text-white placeholder-neutral-500 border border-neutral-700/60 focus:border-amber-500 focus:outline-hidden resize-none"
+                      className="w-full p-2.5 text-xs rounded-xl bg-neutral-800/60 text-white placeholder-neutral-500 border border-neutral-700/60 focus:border-cyan-500 focus:outline-hidden resize-none"
                     />
                   </div>
 
@@ -634,7 +634,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                 <div className="p-4 rounded-2xl bg-neutral-800/25 border border-neutral-800 space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-400/90">
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-cyan-400/90">
                         Remembered Knowledge & Facts ({memories.length})
                       </h3>
                       <div className="text-[11px] text-neutral-400 mt-0.5">
@@ -659,7 +659,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                         value={newMemoryContent}
                         onChange={(e) => setNewMemoryContent(e.target.value)}
                         placeholder="Enter fact or preference to remember..."
-                        className="w-full px-3 py-1.5 text-xs rounded-lg bg-neutral-900 text-white border border-neutral-700 focus:border-amber-500 focus:outline-hidden"
+                        className="w-full px-3 py-1.5 text-xs rounded-lg bg-neutral-900 text-white border border-neutral-700 focus:border-cyan-500 focus:outline-hidden"
                       />
                       <div className="flex items-center gap-2 justify-between">
                         <div className="flex items-center gap-2">
@@ -698,7 +698,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                           </button>
                           <button
                             type="submit"
-                            className="px-3 py-1 text-xs font-semibold rounded-lg bg-amber-500 text-neutral-950 hover:bg-amber-400"
+                            className="px-3 py-1 text-xs font-semibold rounded-lg bg-cyan-500 text-neutral-950 hover:bg-cyan-400"
                           >
                             Save
                           </button>
@@ -780,7 +780,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                                     {mem.content}
                                   </div>
                                   <div className="flex items-center gap-2 mt-0.5 text-[10px] text-neutral-500">
-                                    <span className="px-1.5 py-0.2 bg-neutral-800 text-amber-300/80 rounded">
+                                    <span className="px-1.5 py-0.2 bg-neutral-800 text-cyan-300/80 rounded">
                                       {mem.category}
                                     </span>
                                     <span>{new Date(mem.created_at).toLocaleDateString()}</span>
@@ -874,7 +874,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
 
                   <button
                     onClick={() => setIsCreatingProject(!isCreatingProject)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-amber-500 text-neutral-950 hover:bg-amber-400 transition"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-cyan-500 text-neutral-950 hover:bg-cyan-400 transition"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     New project
@@ -884,7 +884,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                 {/* Create Project Form */}
                 {isCreatingProject && (
                   <form onSubmit={handleCreateNewProject} className="p-4 rounded-2xl bg-neutral-800/60 border border-neutral-700 space-y-3">
-                    <h3 className="text-xs font-semibold uppercase text-amber-400">Create New Project</h3>
+                    <h3 className="text-xs font-semibold uppercase text-cyan-400">Create New Project</h3>
                     <div>
                       <label className="text-xs text-neutral-300 block mb-1">Project Name</label>
                       <input
@@ -892,7 +892,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                         value={newProjectName}
                         onChange={(e) => setNewProjectName(e.target.value)}
                         placeholder="e.g. Angel Companion, Aurora Engine"
-                        className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:border-amber-500 focus:outline-hidden"
+                        className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:border-cyan-500 focus:outline-hidden"
                       />
                     </div>
                     <div>
@@ -902,7 +902,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                         value={newProjectDesc}
                         onChange={(e) => setNewProjectDesc(e.target.value)}
                         placeholder="Brief summary of project goals and scope..."
-                        className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:border-amber-500 focus:outline-hidden"
+                        className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:border-cyan-500 focus:outline-hidden"
                       />
                     </div>
                     <div>
@@ -912,7 +912,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                         value={newProjectGoals}
                         onChange={(e) => setNewProjectGoals(e.target.value)}
                         placeholder="Deliver Stage 3 Memory&#10;Implement Sub-second latency"
-                        className="w-full p-2 text-xs rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:border-amber-500 focus:outline-hidden resize-none"
+                        className="w-full p-2 text-xs rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:border-cyan-500 focus:outline-hidden resize-none"
                       />
                     </div>
                     <div className="flex justify-end gap-2">
@@ -943,14 +943,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                         onClick={() => selectProject(isSelected ? null : proj.id)}
                         className={`p-4 rounded-2xl border cursor-pointer transition ${
                           isSelected
-                            ? "bg-amber-500/10 border-amber-500 text-white"
+                            ? "bg-cyan-500/10 border-cyan-500 text-white"
                             : "bg-neutral-800/30 border-neutral-800 hover:border-neutral-700 text-neutral-300"
                         }`}
                       >
                         <div className="flex items-center justify-between">
                           <div className="font-semibold text-xs text-white">{proj.name}</div>
                           {isSelected && (
-                            <span className="px-2 py-0.5 text-[10px] font-semibold bg-amber-500/20 text-amber-300 rounded-full">
+                            <span className="px-2 py-0.5 text-[10px] font-semibold bg-cyan-500/20 text-cyan-300 rounded-full">
                               Active Focus
                             </span>
                           )}
@@ -973,7 +973,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                 {/* Active Project Decisions & Milestones */}
                 {activeProject && (
                   <div className="p-4 rounded-2xl bg-neutral-800/25 border border-neutral-800 space-y-3">
-                    <h3 className="text-xs font-semibold uppercase text-amber-400/90">
+                    <h3 className="text-xs font-semibold uppercase text-cyan-400/90">
                       Decisions & Milestones for {activeProject.name} ({activeProjectMemories.length})
                     </h3>
 
@@ -1035,7 +1035,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                     type="checkbox"
                     checked={soundEffects}
                     onChange={(e) => setSoundEffects(e.target.checked)}
-                    className="w-4 h-4 accent-amber-500 rounded cursor-pointer"
+                    className="w-4 h-4 accent-cyan-500 rounded cursor-pointer"
                   />
                 </div>
 
@@ -1050,7 +1050,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                     type="checkbox"
                     checked={highContrast}
                     onChange={(e) => setHighContrast(e.target.checked)}
-                    className="w-4 h-4 accent-amber-500 rounded cursor-pointer"
+                    className="w-4 h-4 accent-cyan-500 rounded cursor-pointer"
                   />
                 </div>
               </div>
@@ -1074,7 +1074,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                     type="checkbox"
                     checked={notifyAudioDone}
                     onChange={(e) => setNotifyAudioDone(e.target.checked)}
-                    className="w-4 h-4 accent-amber-500 rounded cursor-pointer"
+                    className="w-4 h-4 accent-cyan-500 rounded cursor-pointer"
                   />
                 </div>
               </div>
@@ -1164,7 +1164,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                         className="flex items-center justify-between p-3 rounded-xl bg-neutral-800/40 border border-neutral-800 hover:border-neutral-700 transition"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="p-2 rounded-lg bg-neutral-800 text-amber-400 border border-neutral-700/80">
+                          <div className="p-2 rounded-lg bg-neutral-800 text-cyan-400 border border-neutral-700/80">
                             {tool.id === "tool_web_search" ? (
                               <Globe className="w-4 h-4" />
                             ) : tool.id === "tool_doc_creator" ? (
@@ -1191,7 +1191,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                             className={`px-2.5 py-0.5 text-[10px] font-semibold rounded-full ${
                               isGranted
                                 ? "bg-emerald-500/20 text-emerald-400"
-                                : "bg-amber-500/20 text-amber-400"
+                                : "bg-cyan-500/20 text-cyan-400"
                             }`}
                           >
                             {perm?.state ? perm.state.toUpperCase() : tool.riskLevel === "none" ? "IMPLICIT" : "PROMPT"}
@@ -1244,7 +1244,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                       value={displayNameInput}
                       onChange={(e) => setDisplayNameInput(e.target.value)}
                       placeholder="Enter display name"
-                      className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/60 text-white placeholder-neutral-500 border border-neutral-700/60 focus:border-amber-500 focus:outline-hidden"
+                      className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/60 text-white placeholder-neutral-500 border border-neutral-700/60 focus:border-cyan-500 focus:outline-hidden"
                     />
                   </div>
                   <div className="flex items-center justify-between">
@@ -1309,7 +1309,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                   },
                 ].map((group) => (
                   <div key={group.category} className="space-y-2">
-                    <div className="text-[11px] font-semibold uppercase tracking-wider text-amber-500/90">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-cyan-500/90">
                       {group.category}
                     </div>
                     <div className="space-y-1.5">

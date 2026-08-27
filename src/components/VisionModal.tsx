@@ -306,13 +306,13 @@ export const VisionModal: React.FC<VisionModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-neutral-800 bg-neutral-950/60">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+            <div className="w-9 h-9 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
               <Eye className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-sm font-semibold text-white">Angel Multimodal Perception</h3>
-                <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
                   Stage 7
                 </span>
               </div>
@@ -348,7 +348,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
               }}
               className={`pb-2.5 flex items-center gap-2 transition border-b-2 ${
                 activeTab === "camera"
-                  ? "border-amber-500 text-amber-400 font-semibold"
+                  ? "border-cyan-500 text-cyan-400 font-semibold"
                   : "border-transparent text-neutral-400 hover:text-neutral-200"
               }`}
             >
@@ -362,7 +362,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
               }}
               className={`pb-2.5 flex items-center gap-2 transition border-b-2 ${
                 activeTab === "screen"
-                  ? "border-amber-500 text-amber-400 font-semibold"
+                  ? "border-cyan-500 text-cyan-400 font-semibold"
                   : "border-transparent text-neutral-400 hover:text-neutral-200"
               }`}
             >
@@ -376,7 +376,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
               }}
               className={`pb-2.5 flex items-center gap-2 transition border-b-2 ${
                 activeTab === "upload"
-                  ? "border-amber-500 text-amber-400 font-semibold"
+                  ? "border-cyan-500 text-cyan-400 font-semibold"
                   : "border-transparent text-neutral-400 hover:text-neutral-200"
               }`}
             >
@@ -415,10 +415,10 @@ export const VisionModal: React.FC<VisionModalProps> = ({
                 )}
 
                 <div className="absolute top-3 left-3 flex items-center gap-2">
-                  <span className="px-2.5 py-1 rounded-lg text-[10px] font-semibold uppercase bg-black/70 text-amber-300 border border-amber-500/30 backdrop-blur-xs">
+                  <span className="px-2.5 py-1 rounded-lg text-[10px] font-semibold uppercase bg-black/70 text-cyan-300 border border-cyan-500/30 backdrop-blur-xs">
                     Source: {capturedPayload.sourceType}
                   </span>
-                  <span className="px-2 py-0.5 rounded-lg text-[10px] font-mono bg-black/60 text-neutral-300 backdrop-blur-xs">
+                  <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-mono bg-black/60 text-neutral-300 backdrop-blur-xs">
                     {capturedPayload.sizeFormatted}
                   </span>
                 </div>
@@ -450,7 +450,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
                         onClick={() => setProcessingMode(opt.id)}
                         className={`px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition ${
                           isSelected
-                            ? "bg-amber-500 text-neutral-950 font-semibold shadow-xs"
+                            ? "bg-cyan-500 text-neutral-950 font-semibold shadow-xs"
                             : "bg-neutral-800/80 text-neutral-400 hover:text-white hover:bg-neutral-800"
                         }`}
                       >
@@ -478,16 +478,16 @@ export const VisionModal: React.FC<VisionModalProps> = ({
                       ? "e.g. Identify this error message and suggest a fix"
                       : "e.g. Summarize key takeaways, extract text or critique the layout"
                   }
-                  className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-neutral-800 text-white border border-neutral-700 focus:border-amber-500 focus:outline-hidden"
+                  className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-neutral-800 text-white border border-neutral-700 focus:border-cyan-500 focus:outline-hidden"
                 />
               </div>
 
               {/* Instant Analysis Output Preview (if run) */}
               {analysisOutput && (
-                <div className="p-4 rounded-2xl bg-neutral-950/70 border border-amber-500/30 space-y-3 animate-fadeIn">
+                <div className="p-4 rounded-2xl bg-neutral-950/70 border border-cyan-500/30 space-y-3 animate-fadeIn">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-amber-400" />
+                      <Sparkles className="w-4 h-4 text-cyan-400" />
                       <span className="text-xs font-semibold text-white">Angel Vision Insights</span>
                     </div>
                     <span className="text-[10px] text-neutral-500 font-mono">
@@ -502,7 +502,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
                   {/* OCR text snippet if available */}
                   {analysisOutput.ocrText && (
                     <div className="p-2.5 rounded-xl bg-neutral-900 border border-neutral-800 text-[11px] font-mono text-neutral-300 max-h-32 overflow-y-auto">
-                      <span className="text-[10px] uppercase font-bold text-amber-400 block mb-1">Extracted OCR:</span>
+                      <span className="text-[10px] uppercase font-bold text-cyan-400 block mb-1">Extracted OCR:</span>
                       {analysisOutput.ocrText}
                     </div>
                   )}
@@ -568,7 +568,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
 
                         <button
                           onClick={handleCaptureCameraSnapshot}
-                          className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-neutral-950 shadow-md flex items-center gap-2"
+                          className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-cyan-500 hover:bg-cyan-400 text-neutral-950 shadow-md flex items-center gap-2"
                         >
                           <Camera className="w-4 h-4" />
                           <span>Capture Frame for Angel</span>
@@ -578,7 +578,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
                   ) : (
                     /* Camera Permission & Request Card */
                     <div className="p-6 rounded-2xl bg-neutral-950/60 border border-neutral-800 text-center space-y-4">
-                      <div className="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 mx-auto">
+                      <div className="w-12 h-12 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mx-auto">
                         <Camera className="w-6 h-6" />
                       </div>
                       <div className="max-w-md mx-auto">
@@ -602,7 +602,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
 
                       <button
                         onClick={() => handleStartCamera(facingMode)}
-                        className="px-6 py-2.5 rounded-xl text-xs font-semibold bg-amber-500 text-neutral-950 hover:bg-amber-400 transition shadow-md inline-flex items-center gap-2"
+                        className="px-6 py-2.5 rounded-xl text-xs font-semibold bg-cyan-500 text-neutral-950 hover:bg-cyan-400 transition shadow-md inline-flex items-center gap-2"
                       >
                         <Camera className="w-4 h-4" />
                         <span>Allow Camera & Start Session</span>
@@ -615,7 +615,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
               {/* TAB 2: Screen Context */}
               {activeTab === "screen" && (
                 <div className="p-6 rounded-2xl bg-neutral-950/60 border border-neutral-800 text-center space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 mx-auto">
+                  <div className="w-12 h-12 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mx-auto">
                     <Monitor className="w-6 h-6" />
                   </div>
                   <div className="max-w-md mx-auto">
@@ -637,7 +637,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
 
                   <button
                     onClick={handleRequestScreenSnapshot}
-                    className="px-6 py-2.5 rounded-xl text-xs font-semibold bg-amber-500 text-neutral-950 hover:bg-amber-400 transition shadow-md inline-flex items-center gap-2"
+                    className="px-6 py-2.5 rounded-xl text-xs font-semibold bg-cyan-500 text-neutral-950 hover:bg-cyan-400 transition shadow-md inline-flex items-center gap-2"
                   >
                     <Monitor className="w-4 h-4" />
                     <span>Select Window / Tab to Capture</span>
@@ -656,7 +656,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
                     }
                   }}
                   onClick={() => fileInputRef.current?.click()}
-                  className="p-8 rounded-2xl border-2 border-dashed border-neutral-800 hover:border-amber-500/60 bg-neutral-950/40 hover:bg-neutral-900/50 transition cursor-pointer text-center space-y-3"
+                  className="p-8 rounded-2xl border-2 border-dashed border-neutral-800 hover:border-cyan-500/60 bg-neutral-950/40 hover:bg-neutral-900/50 transition cursor-pointer text-center space-y-3"
                 >
                   <input
                     ref={fileInputRef}
@@ -670,7 +670,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
                       e.target.value = "";
                     }}
                   />
-                  <div className="w-12 h-12 rounded-2xl bg-neutral-800 text-amber-400 flex items-center justify-center mx-auto border border-neutral-700">
+                  <div className="w-12 h-12 rounded-2xl bg-neutral-800 text-cyan-400 flex items-center justify-center mx-auto border border-neutral-700">
                     <Upload className="w-6 h-6" />
                   </div>
                   <div>
@@ -702,7 +702,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
                 type="button"
                 disabled={isInstantAnalyzing}
                 onClick={handleInstantAnalyze}
-                className="px-3.5 py-2 rounded-xl text-xs font-medium text-amber-300 hover:text-amber-200 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition flex items-center gap-1.5"
+                className="px-3.5 py-2 rounded-xl text-xs font-medium text-cyan-300 hover:text-cyan-200 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 transition flex items-center gap-1.5"
               >
                 {isInstantAnalyzing ? (
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -715,7 +715,7 @@ export const VisionModal: React.FC<VisionModalProps> = ({
               <button
                 type="button"
                 onClick={handleAttachToChat}
-                className="px-4 py-2 rounded-xl text-xs font-semibold bg-amber-500 text-neutral-950 hover:bg-amber-400 transition flex items-center gap-1.5 shadow-xs"
+                className="px-4 py-2 rounded-xl text-xs font-semibold bg-cyan-500 text-neutral-950 hover:bg-cyan-400 transition flex items-center gap-1.5 shadow-xs"
               >
                 <span>Attach to Chat</span>
                 <ArrowRight className="w-3.5 h-3.5" />

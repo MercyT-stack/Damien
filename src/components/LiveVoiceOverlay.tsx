@@ -51,13 +51,13 @@ export const LiveVoiceOverlay: React.FC = () => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: 20 }}
           id="minimized-voice-pill"
-          className="fixed bottom-24 right-6 z-40 flex items-center gap-3 p-2.5 px-4 bg-neutral-900/95 backdrop-blur-lg border border-amber-500/40 rounded-full shadow-2xl text-neutral-100"
+          className="fixed bottom-24 right-6 z-40 flex items-center gap-3 p-2.5 px-4 bg-neutral-900/95 backdrop-blur-lg border border-cyan-500/40 rounded-full shadow-2xl text-neutral-100"
         >
           <AngelVoiceEmblem state={voiceState} volume={currentVolume} size="sm" />
           
           <div className="flex flex-col">
             <span className="text-xs font-semibold text-neutral-100 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
               Angel Live Voice
             </span>
             <span className="text-[10px] text-neutral-400 capitalize">
@@ -103,8 +103,8 @@ export const LiveVoiceOverlay: React.FC = () => {
           {/* Top Bar */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-800/80 bg-neutral-950/50">
             <div className="flex items-center space-x-3">
-              <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-medium">
-                <Radio className="w-3.5 h-3.5 animate-pulse text-amber-400" />
+              <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-medium">
+                <Radio className="w-3.5 h-3.5 animate-pulse text-cyan-400" />
                 <span>Live Audio Session</span>
               </div>
               <span className="text-xs text-neutral-400 hidden sm:inline">
@@ -118,7 +118,7 @@ export const LiveVoiceOverlay: React.FC = () => {
                 onClick={() => setIsVoiceLibraryOpen(true)}
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-neutral-300 hover:text-neutral-100 bg-neutral-900 border border-neutral-800 rounded-xl hover:border-neutral-700 transition"
               >
-                <Sliders className="w-3.5 h-3.5 text-amber-400" />
+                <Sliders className="w-3.5 h-3.5 text-cyan-400" />
                 <span className="hidden sm:inline">Voice Studio</span>
               </button>
 
@@ -179,11 +179,11 @@ export const LiveVoiceOverlay: React.FC = () => {
 
                 {liveTranscript.assistant ? (
                   <div className="flex items-start gap-2.5 justify-start">
-                    <div className="w-7 h-7 rounded-xl bg-neutral-900 border border-amber-500/40 flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                    <div className="w-7 h-7 rounded-xl bg-neutral-900 border border-cyan-500/40 flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
                       <AngelLogo size="xs" />
                     </div>
                     <div className="flex-1 p-3.5 rounded-2xl bg-[#131314] border border-neutral-800 text-xs">
-                      <div className="font-bold text-amber-500 uppercase tracking-wider text-[11px]">
+                      <div className="font-bold text-cyan-500 uppercase tracking-wider text-[11px]">
                         ANGEL
                       </div>
                       <div className="border-b border-neutral-800/80 my-2" />

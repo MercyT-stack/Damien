@@ -179,7 +179,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <span className="font-semibold tracking-[0.2em] text-sm uppercase text-neutral-900 dark:text-neutral-100 font-serif truncate">
                 ANGEL
               </span>
-              <span className="text-[10px] tracking-wider uppercase text-amber-600 dark:text-amber-400 font-medium">
+              <span className="text-[10px] tracking-wider uppercase text-cyan-600 dark:text-cyan-400 font-medium">
                 Stage 3 Intelligence
               </span>
             </div>
@@ -214,7 +214,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     }}
                     className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
                   >
-                    <Plus className="w-3.5 h-3.5 text-amber-500" />
+                    <Plus className="w-3.5 h-3.5 text-cyan-500" />
                     <span>New Conversation</span>
                   </button>
 
@@ -225,7 +225,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     }}
                     className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
                   >
-                    <FolderKanban className="w-3.5 h-3.5 text-amber-500" />
+                    <FolderKanban className="w-3.5 h-3.5 text-cyan-500" />
                     <span>Projects & Workspaces</span>
                   </button>
 
@@ -236,7 +236,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     }}
                     className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
                   >
-                    <BrainCircuit className="w-3.5 h-3.5 text-amber-500" />
+                    <BrainCircuit className="w-3.5 h-3.5 text-cyan-500" />
                     <span>Personalization & Memory</span>
                   </button>
 
@@ -268,7 +268,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         setShowMoreMenu(false);
                         onOpenAuth();
                       }}
-                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition font-medium"
+                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-cyan-600 dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-950/40 transition font-medium"
                     >
                       <Lock className="w-3.5 h-3.5" />
                       <span>Sign In / Register</span>
@@ -286,7 +286,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               title="Recede / Collapse Sidebar"
               aria-label="Recede sidebar"
             >
-              <PanelLeftClose className="w-4 h-4 text-neutral-500 group-hover:text-amber-500 transition-colors" />
+              <PanelLeftClose className="w-4 h-4 text-neutral-500 group-hover:text-cyan-500 transition-colors" />
             </button>
           </div>
         </div>
@@ -301,7 +301,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             title="Start New Conversation (⌘M / ⌘N)"
           >
             <div className="flex items-center gap-2.5">
-              <Plus className="w-4 h-4 text-amber-400 dark:text-amber-600 group-hover:rotate-90 transition-transform duration-200" />
+              <Plus className="w-4 h-4 text-cyan-400 dark:text-cyan-600 group-hover:rotate-90 transition-transform duration-200" />
               <span>New Conversation</span>
             </div>
             <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-neutral-800 dark:bg-neutral-200 text-neutral-300 dark:text-neutral-700">
@@ -320,7 +320,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               placeholder="Search (⌘K)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8.5 pr-8 py-1.5 text-xs rounded-lg bg-neutral-200/60 dark:bg-neutral-800/60 border border-transparent focus:border-amber-500/50 focus:bg-white dark:focus:bg-neutral-950 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-hidden transition-colors"
+              className="w-full pl-8.5 pr-8 py-1.5 text-xs rounded-lg bg-neutral-200/60 dark:bg-neutral-800/60 border border-transparent focus:border-cyan-500/50 focus:bg-white dark:focus:bg-neutral-950 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-hidden transition-colors"
             />
             {searchQuery ? (
               <button
@@ -353,7 +353,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 ) : (
                   <ChevronRight className="w-3 h-3 text-neutral-400" />
                 )}
-                <FolderKanban className="w-3.5 h-3.5 text-amber-500" />
+                <FolderKanban className="w-3.5 h-3.5 text-cyan-500" />
                 <span>Projects</span>
                 <span className="text-[10px] font-normal lowercase bg-neutral-200/80 dark:bg-neutral-800/80 px-1.5 py-0.2 rounded-full text-neutral-600 dark:text-neutral-300 ml-0.5">
                   {projects.length}
@@ -367,7 +367,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     setIsProjectsExpanded(true);
                     setIsAddingProject((prev) => !prev);
                   }}
-                  className="p-1 rounded-md text-neutral-400 hover:text-amber-500 hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition"
+                  className="p-1 rounded-md text-neutral-400 hover:text-cyan-500 hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition"
                   title="Create New Project"
                   aria-label="Create new project"
                 >
@@ -387,11 +387,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
             {/* Active Project Highlight Banner */}
             {activeProject && (
-              <div className="px-2 py-1.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/30 flex items-center justify-between text-xs animate-fadeIn">
+              <div className="px-2 py-1.5 rounded-xl bg-cyan-500/10 dark:bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-between text-xs animate-fadeIn">
                 <div className="flex items-center gap-2 min-w-0 pr-1">
-                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse shrink-0" />
+                  <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse shrink-0" />
                   <div className="min-w-0">
-                    <div className="text-[9px] uppercase tracking-wider text-amber-600 dark:text-amber-400 font-semibold">
+                    <div className="text-[9px] uppercase tracking-wider text-cyan-600 dark:text-cyan-400 font-semibold">
                       Active Workspace Focus
                     </div>
                     <div className="font-medium text-neutral-900 dark:text-neutral-100 truncate">
@@ -401,7 +401,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </div>
                 <button
                   onClick={() => selectProject(null)}
-                  className="p-1 rounded-md text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 hover:bg-amber-500/20 transition"
+                  className="p-1 rounded-md text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 hover:bg-cyan-500/20 transition"
                   title="Clear Project Focus"
                 >
                   <X className="w-3 h-3" />
@@ -413,7 +413,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {isProjectsExpanded && isAddingProject && (
               <form
                 onSubmit={handleQuickCreateProject}
-                className="px-2 py-1.5 rounded-xl bg-white dark:bg-neutral-950 border border-amber-500/50 shadow-xs space-y-1.5 animate-fadeIn"
+                className="px-2 py-1.5 rounded-xl bg-white dark:bg-neutral-950 border border-cyan-500/50 shadow-xs space-y-1.5 animate-fadeIn"
               >
                 <input
                   ref={projectInputRef}
@@ -443,7 +443,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <button
                     type="submit"
                     disabled={!newProjectName.trim() || isCreatingProject}
-                    className="px-2.5 py-0.5 rounded bg-amber-500 hover:bg-amber-600 text-neutral-950 font-medium text-[10px] disabled:opacity-50 transition"
+                    className="px-2.5 py-0.5 rounded bg-cyan-500 hover:bg-cyan-600 text-neutral-950 font-medium text-[10px] disabled:opacity-50 transition"
                   >
                     {isCreatingProject ? "Creating..." : "Save"}
                   </button>
@@ -456,7 +456,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <div className="space-y-0.5">
                 {projects.length === 0 ? (
                   <div className="px-3 py-2 text-[11px] text-neutral-400 dark:text-neutral-500 text-center rounded-lg bg-neutral-200/30 dark:bg-neutral-800/30">
-                    No active projects. Click <span className="font-semibold text-amber-500">+</span> to start one.
+                    No active projects. Click <span className="font-semibold text-cyan-500">+</span> to start one.
                   </div>
                 ) : (
                   projects.map((proj) => {
@@ -468,14 +468,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         onClick={() => handleToggleProjectSelect(proj.id)}
                         className={`group relative flex items-center justify-between w-full px-2.5 py-1.5 text-xs rounded-xl transition-all duration-150 cursor-pointer ${
                           isSelected
-                            ? "bg-amber-500/15 text-amber-900 dark:text-amber-200 font-medium border border-amber-500/30 shadow-xs"
+                            ? "bg-cyan-500/15 text-cyan-900 dark:text-cyan-200 font-medium border border-cyan-500/30 shadow-xs"
                             : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60"
                         }`}
                       >
                         <div className="flex items-center gap-2 min-w-0 flex-1 pr-1">
                           <Folder
                             className={`w-3.5 h-3.5 shrink-0 ${
-                              isSelected ? "text-amber-500 fill-amber-500/20" : "text-neutral-400 group-hover:text-amber-500"
+                              isSelected ? "text-cyan-500 fill-cyan-500/20" : "text-neutral-400 group-hover:text-cyan-500"
                             }`}
                           />
                           <span className="truncate">{proj.name}</span>
@@ -488,7 +488,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                         <div className="flex items-center gap-1 shrink-0">
                           {isSelected && (
-                            <span className="text-[9px] font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 px-1 py-0.2 rounded bg-amber-500/10">
+                            <span className="text-[9px] font-semibold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 px-1 py-0.2 rounded bg-cyan-500/10">
                               Active
                             </span>
                           )}
@@ -533,13 +533,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     id={`conv-item-${conv.id}`}
                     className={`group relative flex items-center justify-between w-full px-3 py-2 text-xs rounded-xl transition-all duration-150 cursor-pointer ${
                       isActive
-                        ? "bg-amber-500/10 dark:bg-amber-500/15 text-amber-900 dark:text-amber-300 font-medium border border-amber-500/20"
+                        ? "bg-cyan-500/10 dark:bg-cyan-500/15 text-cyan-900 dark:text-cyan-300 font-medium border border-cyan-500/20"
                         : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60"
                     }`}
                     onClick={() => handleSelectConv(conv.id)}
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1 pr-1">
-                      <MessageSquare className={`w-3.5 h-3.5 shrink-0 ${isActive ? "text-amber-500" : "text-neutral-400"}`} />
+                      <MessageSquare className={`w-3.5 h-3.5 shrink-0 ${isActive ? "text-cyan-500" : "text-neutral-400"}`} />
                       {isEditing ? (
                         <input
                           type="text"
@@ -551,7 +551,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           }}
                           autoFocus
                           onClick={(e) => e.stopPropagation()}
-                          className="w-full bg-white dark:bg-neutral-950 px-1.5 py-0.5 rounded border border-amber-500 text-xs text-neutral-900 dark:text-neutral-100 focus:outline-hidden"
+                          className="w-full bg-white dark:bg-neutral-950 px-1.5 py-0.5 rounded border border-cyan-500 text-xs text-neutral-900 dark:text-neutral-100 focus:outline-hidden"
                         />
                       ) : (
                         <span className="truncate">{conv.title || "New Conversation"}</span>
@@ -562,7 +562,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       {isEditing ? (
                         <button
                           onClick={(e) => handleSaveRename(e, conv.id)}
-                          className="p-1 text-amber-600 hover:text-amber-700 rounded transition"
+                          className="p-1 text-cyan-600 hover:text-cyan-700 rounded transition"
                           title="Save Title"
                         >
                           <Check className="w-3.5 h-3.5" />
@@ -614,7 +614,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {user ? (
             <div className="flex items-center justify-between p-2 rounded-xl bg-neutral-200/40 dark:bg-neutral-800/40">
               <div className="flex items-center gap-2.5 min-w-0 pr-2">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 text-white flex items-center justify-center text-xs font-semibold shrink-0 shadow-xs">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-cyan-600 to-cyan-400 text-white flex items-center justify-center text-xs font-semibold shrink-0 shadow-xs">
                   {(user.display_name || user.email || "A").charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0 flex flex-col">
@@ -638,7 +638,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button
               id="btn-sidebar-login"
               onClick={() => onOpenAuth()}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium rounded-xl bg-amber-500 hover:bg-amber-600 text-neutral-950 font-semibold transition-colors shadow-xs"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium rounded-xl bg-cyan-500 hover:bg-cyan-600 text-neutral-950 font-semibold transition-colors shadow-xs"
             >
               <Lock className="w-3.5 h-3.5" />
               <span>Sign In / Register</span>

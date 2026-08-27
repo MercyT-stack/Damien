@@ -2,7 +2,7 @@
 
 @layer base {
   body {
-    @apply antialiased selection:bg-amber-500/20 selection:text-amber-900 dark:selection:text-amber-200;
+    @apply antialiased selection:bg-cyan-500/20 selection:text-cyan-900 dark:selection:text-cyan-200;
   }
 }
 
@@ -89,7 +89,7 @@
 }
 
 .markdown-body blockquote {
-  border-left: 3px solid #d4af37;
+  border-left: 3px solid #00e5ff;
   padding-left: 0.75rem;
   font-style: italic;
   opacity: 0.85;

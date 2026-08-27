@@ -101,7 +101,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       title: "New Conversation",
       subtitle: "Start a fresh discussion with Angel",
       category: "Actions",
-      icon: <Plus className="w-4 h-4 text-amber-500" />,
+      icon: <Plus className="w-4 h-4 text-cyan-500" />,
       shortcut: `${modKey}M`,
       action: () => {
         startNewConversation();
@@ -114,7 +114,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       title: isVoiceActive ? "End Voice Session" : "Start Live Voice Call",
       subtitle: isVoiceActive ? "Disconnect two-way audio" : "Talk with Angel in real-time",
       category: "Actions",
-      icon: <Mic className={`w-4 h-4 ${isVoiceActive ? "text-rose-500" : "text-amber-500"}`} />,
+      icon: <Mic className={`w-4 h-4 ${isVoiceActive ? "text-rose-500" : "text-cyan-500"}`} />,
       shortcut: `${modKey}Shift+V`,
       action: () => {
         if (isVoiceActive) stopVoiceSession();
@@ -155,7 +155,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       title: "Projects & Workspace Hub",
       subtitle: "Manage active projects, goals, and technical guidelines",
       category: "Settings",
-      icon: <FolderKanban className="w-4 h-4 text-amber-500" />,
+      icon: <FolderKanban className="w-4 h-4 text-cyan-500" />,
       shortcut: `${modKey}Shift+P`,
       action: () => {
         onOpenSettings("projects");
@@ -168,7 +168,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       title: "Personalization & Memory Hub",
       subtitle: "Review stored facts, preferences, and system prompt tuning",
       category: "Settings",
-      icon: <BrainCircuit className="w-4 h-4 text-amber-500" />,
+      icon: <BrainCircuit className="w-4 h-4 text-cyan-500" />,
       shortcut: `${modKey}Shift+M`,
       action: () => {
         onOpenSettings("personalization");
@@ -207,7 +207,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       title: "Switch to Light Mode",
       subtitle: "Set light appearance theme",
       category: "Settings",
-      icon: <Sun className="w-4 h-4 text-amber-500" />,
+      icon: <Sun className="w-4 h-4 text-cyan-500" />,
       action: () => {
         setTheme("light");
         onClose();
@@ -229,7 +229,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         title: `Set Intelligence: ${lvl.label}`,
         subtitle: lvl.desc,
         category: "Intelligence",
-        icon: <Sparkles className={`w-4 h-4 ${intelligenceLevel === lvl.id ? "text-amber-500" : "text-neutral-400"}`} />,
+        icon: <Sparkles className={`w-4 h-4 ${intelligenceLevel === lvl.id ? "text-cyan-500" : "text-neutral-400"}`} />,
         action: () => {
           setIntelligenceLevel(lvl.id);
           onClose();
@@ -245,7 +245,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         title: `Project: ${proj.name}`,
         subtitle: isSelected ? "Currently active workspace" : `Switch focus to this project (${proj.goals?.length || 0} goals)`,
         category: "Projects",
-        icon: <FolderKanban className={`w-4 h-4 ${isSelected ? "text-amber-500" : "text-neutral-400"}`} />,
+        icon: <FolderKanban className={`w-4 h-4 ${isSelected ? "text-cyan-500" : "text-neutral-400"}`} />,
         action: () => {
           selectProject(isSelected ? null : proj.id);
           onClose();
@@ -263,7 +263,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         title: c.title || "Untitled Conversation",
         subtitle: `Conversation • Updated ${formattedDate}`,
         category: "Conversations",
-        icon: <MessageSquare className={`w-4 h-4 ${isCurrent ? "text-amber-500" : "text-neutral-400"}`} />,
+        icon: <MessageSquare className={`w-4 h-4 ${isCurrent ? "text-cyan-500" : "text-neutral-400"}`} />,
         action: () => {
           selectConversation(c.id);
           onClose();
@@ -343,7 +343,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       >
         {/* Search Header */}
         <div className="flex items-center px-4 py-3.5 border-b border-neutral-200 dark:border-neutral-800 gap-3">
-          <Search className="w-5 h-5 text-amber-500 shrink-0" />
+          <Search className="w-5 h-5 text-cyan-500 shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -386,7 +386,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                   onMouseEnter={() => setSelectedIndex(idx)}
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer transition-colors ${
                     isSelected
-                      ? "bg-amber-500/10 dark:bg-amber-500/15 text-neutral-900 dark:text-white"
+                      ? "bg-cyan-500/10 dark:bg-cyan-500/15 text-neutral-900 dark:text-white"
                       : "text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800/50"
                   }`}
                 >
@@ -394,7 +394,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                     <div
                       className={`p-1.5 rounded-lg shrink-0 ${
                         isSelected
-                          ? "bg-amber-500/20 text-amber-500"
+                          ? "bg-cyan-500/20 text-cyan-500"
                           : "bg-neutral-100 dark:bg-neutral-800 text-neutral-500"
                       }`}
                     >
@@ -422,7 +422,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                       </kbd>
                     )}
                     {isSelected && (
-                      <ArrowRight className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+                      <ArrowRight className="w-3.5 h-3.5 text-cyan-500 animate-pulse" />
                     )}
                   </div>
                 </div>
@@ -444,7 +444,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
               to select
             </span>
           </div>
-          <span className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">
+          <span className="text-[10px] text-cyan-600 dark:text-cyan-400 font-medium">
             Angel Command Palette
           </span>
         </div>

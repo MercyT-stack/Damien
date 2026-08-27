@@ -237,13 +237,13 @@ export const VoiceEnrollmentModal: React.FC<VoiceEnrollmentModalProps> = ({
         {/* Header */}
         <div className="px-6 py-5 border-b border-neutral-800 flex items-center justify-between bg-neutral-950/60">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+            <div className="p-2.5 rounded-2xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
               <Fingerprint className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-base font-bold text-white flex items-center gap-2">
                 Voice Identity Enrollment
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
                   Biometric Calibration
                 </span>
               </h2>
@@ -278,7 +278,7 @@ export const VoiceEnrollmentModal: React.FC<VoiceEnrollmentModalProps> = ({
                 onChange={(e) => setProfileName(e.target.value)}
                 placeholder="e.g. Mercy, Alex, Dad"
                 disabled={isRecording}
-                className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/70 border border-neutral-700/70 text-white placeholder-neutral-500 focus:outline-hidden focus:border-amber-500"
+                className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/70 border border-neutral-700/70 text-white placeholder-neutral-500 focus:outline-hidden focus:border-cyan-500"
               />
             </div>
 
@@ -290,7 +290,7 @@ export const VoiceEnrollmentModal: React.FC<VoiceEnrollmentModalProps> = ({
                 value={role}
                 onChange={(e) => setRole(e.target.value as any)}
                 disabled={isRecording}
-                className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/70 border border-neutral-700/70 text-white focus:outline-hidden focus:border-amber-500"
+                className="w-full px-3 py-1.5 text-xs rounded-xl bg-neutral-800/70 border border-neutral-700/70 text-white focus:outline-hidden focus:border-cyan-500"
               >
                 <option value="owner">Primary Owner (Full Access)</option>
                 <option value="partner">Partner (Trusted)</option>
@@ -311,16 +311,16 @@ export const VoiceEnrollmentModal: React.FC<VoiceEnrollmentModalProps> = ({
                   <div
                     className={`flex-1 h-1.5 rounded-full transition-all duration-300 ${
                       isDone
-                        ? "bg-amber-400"
+                        ? "bg-cyan-400"
                         : isCurrent
-                        ? "bg-amber-500/70 ring-2 ring-amber-500/30"
+                        ? "bg-cyan-500/70 ring-2 ring-cyan-500/30"
                         : "bg-neutral-800"
                     }`}
                   />
                   <span
                     className={`text-[10px] font-bold ${
                       isDone
-                        ? "text-amber-400"
+                        ? "text-cyan-400"
                         : isCurrent
                         ? "text-white"
                         : "text-neutral-500"
@@ -336,14 +336,14 @@ export const VoiceEnrollmentModal: React.FC<VoiceEnrollmentModalProps> = ({
           {/* Current Step Card */}
           <div className="p-5 rounded-2xl bg-neutral-950/70 border border-neutral-800 flex flex-col items-center text-center space-y-4">
             <div className="space-y-1">
-              <span className="text-[11px] font-semibold tracking-wider text-amber-400 uppercase">
+              <span className="text-[11px] font-semibold tracking-wider text-cyan-400 uppercase">
                 Step {currentStep.id}: {currentStep.title}
               </span>
               <p className="text-xs text-neutral-400">{currentStep.description}</p>
             </div>
 
             {/* Prompt reading phrase box */}
-            <div className="w-full p-4 rounded-xl bg-neutral-900 border border-amber-500/30 shadow-inner">
+            <div className="w-full p-4 rounded-xl bg-neutral-900 border border-cyan-500/30 shadow-inner">
               <p className="text-sm sm:text-base font-semibold text-neutral-100 italic tracking-wide leading-relaxed">
                 "{currentStep.promptPhrase}"
               </p>
@@ -361,7 +361,7 @@ export const VoiceEnrollmentModal: React.FC<VoiceEnrollmentModalProps> = ({
                       key={i}
                       style={{ height: `${barHeight}%` }}
                       className={`w-1.5 rounded-full transition-all duration-75 ${
-                        isRecording ? "bg-amber-400 shadow-sm" : "bg-neutral-700"
+                        isRecording ? "bg-cyan-400 shadow-sm" : "bg-neutral-700"
                       }`}
                     />
                   );
@@ -372,7 +372,7 @@ export const VoiceEnrollmentModal: React.FC<VoiceEnrollmentModalProps> = ({
               {isRecording && (
                 <div className="w-full h-1.5 rounded-full bg-neutral-800 overflow-hidden">
                   <div
-                    className="h-full bg-amber-400 transition-all duration-75"
+                    className="h-full bg-cyan-400 transition-all duration-75"
                     style={{ width: `${recordingProgress}%` }}
                   />
                 </div>
@@ -388,8 +388,8 @@ export const VoiceEnrollmentModal: React.FC<VoiceEnrollmentModalProps> = ({
                 disabled={isRecording}
                 className={`px-6 py-3 rounded-2xl text-xs font-bold flex items-center gap-2.5 shadow-lg transition-all active:scale-95 ${
                   isRecording
-                    ? "bg-amber-500 text-neutral-950 animate-pulse"
-                    : "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-neutral-950 font-black shadow-amber-500/20"
+                    ? "bg-cyan-500 text-neutral-950 animate-pulse"
+                    : "bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-neutral-950 font-black shadow-cyan-500/20"
                 }`}
               >
                 <Mic className="w-4 h-4 stroke-[2.5]" />
@@ -398,7 +398,7 @@ export const VoiceEnrollmentModal: React.FC<VoiceEnrollmentModalProps> = ({
                 </span>
               </button>
             ) : (
-              <div className="flex items-center gap-2 text-amber-400 text-xs font-bold py-2">
+              <div className="flex items-center gap-2 text-cyan-400 text-xs font-bold py-2">
                 <RefreshCw className="w-4 h-4 animate-spin" />
                 <span>Synthesizing Voice Signature & Enrolling Profile...</span>
               </div>
@@ -410,11 +410,11 @@ export const VoiceEnrollmentModal: React.FC<VoiceEnrollmentModalProps> = ({
             <div className="grid grid-cols-3 gap-2 text-center text-xs p-3 rounded-xl bg-neutral-950/40 border border-neutral-800">
               <div>
                 <span className="text-neutral-500 text-[10px] block">Fundamental Pitch</span>
-                <strong className="text-amber-400 font-bold">{currentExtracted.pitchAvgHz} Hz</strong>
+                <strong className="text-cyan-400 font-bold">{currentExtracted.pitchAvgHz} Hz</strong>
               </div>
               <div>
                 <span className="text-neutral-500 text-[10px] block">Spectral Resonance</span>
-                <strong className="text-amber-400 font-bold">{currentExtracted.spectralCentroidAvg} Hz</strong>
+                <strong className="text-cyan-400 font-bold">{currentExtracted.spectralCentroidAvg} Hz</strong>
               </div>
               <div>
                 <span className="text-neutral-500 text-[10px] block">Harmonic Ratio</span>
