@@ -54,7 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     isStreaming,
   } = useConversation();
 
-  const { user, isSupabaseLive, signOut } = useAuth();
+  const { user, profile, isSupabaseLive, signOut } = useAuth();
   const {
     projects,
     activeProject,
@@ -505,21 +505,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <div className="flex items-center justify-between p-2 rounded-xl bg-neutral-200/40 dark:bg-neutral-800/40">
                 <div className="flex items-center gap-2.5 min-w-0 pr-2">
                   <UserAvatar
-                    avatarId={user.avatar_id}
+                    avatarId={profile?.avatar_url || user.avatar_id}
                     usernameOrEmail={user.username || user.email}
                     size="sm"
                   />
                   <div className="min-w-0 flex flex-col">
                     <span className="text-xs font-semibold text-neutral-900 dark:text-neutral-100 truncate">
-                      @{user.username || user.display_name?.toLowerCase().replace(/\s+/g, "_") || "user"}
+                      {user.email && user.email.includes("@")
+                        ? user.email
+                            .split("@")[0]
+                            .split(/[._+\-]+/)
+                            .filter(Boolean)
+                            .slice(0, 2)
+                            .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+                            .join(" ")
+                        : "User"}
                     </span>
-                    <span className="text-[10px] text-neutral-500 truncate">{user.display_name || user.email}</span>
+                    <span className="text-[10px] text-neutral-500 truncate">
+                      {user.email}
+                    </span>
                   </div>
                 </div>
                 <button
                   id="btn-sidebar-signout"
                   onClick={() => signOut()}
-                  className="p-1.5 text-neutral-400 hover:text-rose-500 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+                  className="p-1.5 text-neutral-400 hover:text-rose-500 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors shrink-0"
                   title="Sign Out"
                   aria-label="Sign out"
                 >

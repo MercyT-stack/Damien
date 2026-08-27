@@ -4,6 +4,7 @@ import { useVoice } from "../contexts/VoiceContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useCapability } from "../contexts/CapabilityContext";
 import { VisionModal } from "./VisionModal";
+import { CameraCaptureModal, MediaCaptureAttachment } from "./CameraCaptureModal";
 import { AngelLogo } from "./AngelLogo";
 import { IntelligenceLevel } from "../types";
 import { VisionAttachmentPayload } from "../types/visionTypes";
@@ -13,6 +14,7 @@ import {
   Mic, 
   MicOff,
   Camera, 
+  Video,
   Sparkles, 
   X, 
   Radio, 
@@ -37,14 +39,17 @@ import {
   Plug,
   Monitor,
   Eye,
+  Upload,
 } from "lucide-react";
 
 interface AttachedDocument {
   name: string;
-  type: "pdf" | "spreadsheet" | "code" | "document" | "image" | "text";
+  type: "pdf" | "spreadsheet" | "code" | "document" | "image" | "video" | "text";
   size: string;
   content: string;
   isImage?: boolean;
+  isVideo?: boolean;
+  mimeType?: string;
   sourceType?: string;
 }
 
@@ -80,6 +85,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
   const [showIntelligenceMenu, setShowIntelligenceMenu] = useState<boolean>(false);
   const [showLiveTextInput, setShowLiveTextInput] = useState<boolean>(false);
   const [isVisionModalOpen, setIsVisionModalOpen] = useState<boolean>(false);
+  const [isCameraModalOpen, setIsCameraModalOpen] = useState<boolean>(false);
   const [attachedDoc, setAttachedDoc] = useState<AttachedDocument | null>(null);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -219,6 +225,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
       size: payload.sizeFormatted || "Visual Context",
       content: payload.base64Data,
       isImage: !payload.mimeType.includes("pdf"),
+      mimeType: payload.mimeType,
       sourceType: payload.sourceType,
     });
     if (promptText) {
@@ -226,11 +233,25 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
     }
   };
 
+  // Handle Photo or Video capture from CameraCaptureModal
+  const handleAttachMedia = (media: MediaCaptureAttachment) => {
+    setAttachedDoc({
+      name: media.name,
+      type: media.type === "video" ? "video" : "image",
+      size: media.sizeFormatted,
+      content: media.dataUrl,
+      isImage: media.type === "image",
+      isVideo: media.type === "video",
+      mimeType: media.mimeType,
+      sourceType: media.type,
+    });
+  };
+
   // Direct Clipboard Paste handler for screenshots and images
   const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
     if (e.clipboardData && e.clipboardData.files && e.clipboardData.files.length > 0) {
       const file = e.clipboardData.files[0];
-      if (file.type.startsWith("image/") || file.type.includes("pdf")) {
+      if (file.type.startsWith("image/") || file.type.startsWith("video/") || file.type.includes("pdf")) {
         e.preventDefault();
         processUploadedFile(file);
       }
@@ -244,6 +265,8 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
     
     if (file.type.includes("pdf") || nameLower.endsWith(".pdf")) {
       type = "pdf";
+    } else if (file.type.startsWith("video/") || nameLower.endsWith(".mp4") || nameLower.endsWith(".webm") || nameLower.endsWith(".mov")) {
+      type = "video";
     } else if (
       file.type.includes("csv") ||
       file.type.includes("spreadsheet") ||
@@ -276,7 +299,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
 
     const reader = new FileReader();
 
-    if (type === "image" || type === "pdf") {
+    if (type === "image" || type === "video" || type === "pdf") {
       reader.onload = (e) => {
         if (e.target?.result) {
           setAttachedDoc({
@@ -285,7 +308,9 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
             size: sizeFormatted,
             content: e.target.result as string,
             isImage: type === "image",
-            sourceType: type === "pdf" ? "document" : "image",
+            isVideo: type === "video",
+            mimeType: file.type,
+            sourceType: type === "video" ? "video" : (type === "pdf" ? "document" : "image"),
           });
         }
       };
@@ -322,16 +347,16 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
     let mediaAttachmentPayload: { data: string; mimeType: string; name?: string; sourceType?: string } | undefined = undefined;
 
     if (attachedDoc) {
-      if (attachedDoc.isImage || attachedDoc.content.startsWith("data:")) {
-        const mimeType = attachedDoc.type === "pdf" ? "application/pdf" : "image/png";
+      if (attachedDoc.isImage || attachedDoc.isVideo || attachedDoc.content.startsWith("data:")) {
+        const mimeType = attachedDoc.mimeType || (attachedDoc.type === "pdf" ? "application/pdf" : (attachedDoc.type === "video" ? "video/mp4" : "image/png"));
         mediaAttachmentPayload = {
           data: attachedDoc.content,
           mimeType,
           name: attachedDoc.name,
-          sourceType: attachedDoc.sourceType || (attachedDoc.isImage ? "image" : "document"),
+          sourceType: attachedDoc.sourceType || (attachedDoc.isVideo ? "video" : (attachedDoc.isImage ? "image" : "document")),
         };
         if (!content) {
-          content = `Please analyze this attached ${attachedDoc.sourceType || "visual content"}: ${attachedDoc.name}`;
+          content = `Please analyze this attached ${attachedDoc.sourceType || "media content"}: ${attachedDoc.name}`;
         }
       } else {
         const docHeader = `[Attached Document: "${attachedDoc.name}" (${attachedDoc.size})]\n---\n${attachedDoc.content}\n---\n\n`;
@@ -363,6 +388,8 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
     switch (type) {
       case "pdf":
         return <FileText className="w-4 h-4 text-rose-500" />;
+      case "video":
+        return <Video className="w-4 h-4 text-rose-500" />;
       case "spreadsheet":
         return <FileSpreadsheet className="w-4 h-4 text-emerald-500" />;
       case "code":
@@ -396,9 +423,16 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
       <input
         ref={imageInputRef}
         type="file"
-        accept="image/*,application/pdf"
+        accept="image/*,video/*,application/pdf"
         className="hidden"
         onChange={handleFileChange}
+      />
+
+      {/* Camera Capture Modal for Photo & Video Recording */}
+      <CameraCaptureModal
+        isOpen={isCameraModalOpen}
+        onClose={() => setIsCameraModalOpen(false)}
+        onAttachMedia={handleAttachMedia}
       />
 
       {/* Vision Modal for Camera & Screen Context */}
@@ -408,7 +442,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
         onAttachVision={handleAttachVision}
       />
 
-      {/* Attached Document Preview Chip */}
+      {/* Attached Document / Media Preview Chip */}
       {attachedDoc && (
         <div
           id="attached-document-chip"
@@ -421,6 +455,10 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
                 alt={attachedDoc.name}
                 className="w-9 h-9 object-cover rounded-lg border border-neutral-200 dark:border-neutral-800 shrink-0"
               />
+            ) : attachedDoc.isVideo ? (
+              <div className="w-9 h-9 rounded-lg bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-400 shrink-0">
+                <Video className="w-4 h-4" />
+              </div>
             ) : (
               <div className="p-2 rounded-lg bg-neutral-100 dark:bg-neutral-800 shrink-0">
                 {getDocIcon(attachedDoc.type)}
@@ -440,14 +478,13 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
           <button
             onClick={() => setAttachedDoc(null)}
             className="p-1 text-neutral-400 hover:text-red-500 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
-            title="Remove document"
+            title="Remove attachment"
             aria-label="Remove attached file"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
-
       {/* Speech-To-Text Listening Banner */}
       {isSTTActive && (
         <div
@@ -520,12 +557,29 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
           </div>
 
           <div className="space-y-3">
-            {/* FILES & MULTIMODAL */}
+            {/* MEDIA, CAMERA & MULTIMODAL */}
             <div>
               <div className="px-2 pb-1 text-[10px] font-bold tracking-wider text-neutral-500 uppercase">
-                Input & Multimodal
+                Camera & Multimodal
               </div>
               <div className="space-y-0.5">
+                {/* 1. Direct Camera: Take Picture or Record Video */}
+                <button
+                  id="btn-menu-camera-capture"
+                  onClick={() => {
+                    setIsCameraModalOpen(true);
+                    setShowToolsMenu(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+                >
+                  <Camera className="w-4 h-4 text-rose-500 shrink-0" />
+                  <div className="text-left">
+                    <span className="block font-medium">Take Picture / Record Video</span>
+                    <span className="text-[10px] text-neutral-400">Snap photo or record video clip with audio</span>
+                  </div>
+                </button>
+
+                {/* 2. Upload Images & Files */}
                 <button
                   id="btn-menu-upload-image"
                   onClick={() => {
@@ -534,13 +588,14 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
                   }}
                   className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-xl text-xs font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
                 >
-                  <ImageIcon className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <Upload className="w-4 h-4 text-emerald-500 shrink-0" />
                   <div className="text-left">
-                    <span className="block font-medium">Upload Image / PDF</span>
-                    <span className="text-[10px] text-neutral-400">Photos, diagrams, invoices, PDFs</span>
+                    <span className="block font-medium">Upload Images & Files</span>
+                    <span className="text-[10px] text-neutral-400">Photos, videos, diagrams, PDFs</span>
                   </div>
                 </button>
 
+                {/* 3. Attach Document or Code */}
                 <button
                   id="btn-menu-attach-file"
                   onClick={() => {
@@ -556,6 +611,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
                   </div>
                 </button>
 
+                {/* 4. Real-Time Screen & Camera Vision */}
                 <button
                   id="btn-menu-camera-vision"
                   onClick={() => {
@@ -567,7 +623,7 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
                   <Eye className="w-4 h-4 text-blue-500 shrink-0" />
                   <div className="text-left">
                     <span className="block font-medium">Real-Time Camera & Screen Vision</span>
-                    <span className="text-[10px] text-neutral-400">Temporary live eye & digital inspector</span>
+                    <span className="text-[10px] text-neutral-400">Live streaming eye & screen inspector</span>
                   </div>
                 </button>
               </div>
@@ -889,15 +945,15 @@ export const ChatComposer: React.FC<ChatComposerProps> = ({
             className="flex-1 max-h-[180px] py-1.5 px-2 bg-transparent text-sm text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-hidden resize-none leading-relaxed disabled:opacity-60"
           />
 
-          {/* [ Vision ] Camera, Screen & Visual Input */}
+          {/* [ Camera / Video Capture ] Snap photos or record videos */}
           <button
-            id="btn-composer-vision"
+            id="btn-composer-camera"
             type="button"
-            onClick={() => setIsVisionModalOpen(true)}
+            onClick={() => setIsCameraModalOpen(true)}
             disabled={isStreaming}
             className="p-2 rounded-xl transition-all duration-150 flex items-center justify-center shrink-0 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 disabled:opacity-50"
-            title="Vision (Camera, Screen & Image Input)"
-            aria-label="Vision input"
+            title="Camera (Take Picture or Record Video)"
+            aria-label="Take picture or record video"
           >
             <Camera className="w-4 h-4 stroke-[2]" />
           </button>

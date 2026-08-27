@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { AngelLogo } from "./AngelLogo";
 import { getDynamicGreeting } from "../config/angel";
 import { useAuth } from "../contexts/AuthContext";
+import { useMemory } from "../contexts/MemoryContext";
 import { Sparkles, Compass, Lightbulb, PenLine, Terminal } from "lucide-react";
 
 interface GreetingProps {
@@ -10,7 +11,13 @@ interface GreetingProps {
 
 export const Greeting: React.FC<GreetingProps> = ({ onSelectPrompt }) => {
   const { user } = useAuth();
-  const greetingName = user?.username || user?.display_name?.split(" ")[0] || user?.name?.split(" ")[0] || undefined;
+  const { memoryPreferences } = useMemory();
+  const greetingName =
+    memoryPreferences?.preferred_name?.trim() ||
+    user?.username ||
+    user?.display_name?.split(" ")[0] ||
+    user?.name?.split(" ")[0] ||
+    undefined;
 
   const { greeting, subtitle } = useMemo(() => {
     return getDynamicGreeting(greetingName);

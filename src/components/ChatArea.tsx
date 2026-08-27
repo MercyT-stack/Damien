@@ -208,17 +208,26 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                     {isUser ? (
                       <div className="space-y-2.5">
                         {msg.metadata?.previewUrl && (
-                          <div className="rounded-xl overflow-hidden border border-neutral-200 shadow-sm max-w-sm">
-                            <img
-                              src={msg.metadata.previewUrl}
-                              alt={msg.metadata.mediaName || "Attached image"}
-                              className="w-full h-auto max-h-64 object-contain bg-neutral-900"
-                            />
+                          <div className="rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-sm max-w-sm">
+                            {msg.metadata.mediaType?.startsWith("video/") || msg.metadata.previewUrl.startsWith("data:video/") ? (
+                              <video
+                                src={msg.metadata.previewUrl}
+                                controls
+                                playsInline
+                                className="w-full h-auto max-h-64 object-contain bg-black"
+                              />
+                            ) : (
+                              <img
+                                src={msg.metadata.previewUrl}
+                                alt={msg.metadata.mediaName || "Attached image"}
+                                className="w-full h-auto max-h-64 object-contain bg-neutral-900"
+                              />
+                            )}
                             {msg.metadata.mediaName && (
-                              <div className="px-3 py-1.5 bg-neutral-50 border-t border-neutral-200 text-[11px] text-neutral-600 flex items-center justify-between font-mono">
+                              <div className="px-3 py-1.5 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 text-[11px] text-neutral-600 dark:text-neutral-300 flex items-center justify-between font-mono">
                                 <span className="truncate">{msg.metadata.mediaName}</span>
                                 {msg.metadata.sourceType && (
-                                  <span className="capitalize font-sans px-1.5 py-0.5 rounded bg-neutral-200 text-neutral-700 text-[9px]">
+                                  <span className="capitalize font-sans px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-[9px]">
                                     {msg.metadata.sourceType}
                                   </span>
                                 )}

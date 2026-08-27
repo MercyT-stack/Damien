@@ -11,6 +11,7 @@ import { ChatArea } from "./components/ChatArea";
 import { ChatComposer } from "./components/ChatComposer";
 import { SettingsModal, SettingsTab } from "./components/SettingsModal";
 import { AuthModal } from "./components/AuthModal";
+import { WelcomePersonalizeModal } from "./components/WelcomePersonalizeModal";
 import { CommandPalette } from "./components/CommandPalette";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 
@@ -27,6 +28,7 @@ const AngelMainLayout: React.FC = () => {
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const [settingsTab, setSettingsTab] = useState<SettingsTab>("voice");
   const [authOpen, setAuthOpen] = useState<boolean>(false);
+  const [welcomePersonalizeOpen, setWelcomePersonalizeOpen] = useState<boolean>(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState<boolean>(false);
   const [composerPrompt, setComposerPrompt] = useState<string>("");
 
@@ -143,6 +145,16 @@ const AngelMainLayout: React.FC = () => {
       <AuthModal
         isOpen={authOpen}
         onClose={() => setAuthOpen(false)}
+        onSuccessfulAuth={() => {
+          setTimeout(() => {
+            setWelcomePersonalizeOpen(true);
+          }, 150);
+        }}
+      />
+
+      <WelcomePersonalizeModal
+        isOpen={welcomePersonalizeOpen}
+        onClose={() => setWelcomePersonalizeOpen(false)}
       />
     </div>
   );

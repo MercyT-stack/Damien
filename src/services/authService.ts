@@ -175,11 +175,57 @@ export async function signInUser(email: string, password: string): Promise<{ use
 }
 
 const LOCAL_STORAGE_KEY_LAST_GOOGLE = "angel_last_google_account";
+const LOCAL_STORAGE_KEY_SAVED_GOOGLE_ACCOUNTS = "angel_saved_google_accounts";
 
 export interface LastGoogleAccount {
   email: string;
   name: string;
   username: string;
+}
+
+export interface SavedGoogleAccount {
+  email: string;
+  name: string;
+  username: string;
+}
+
+const DEFAULT_GOOGLE_ACCOUNTS: SavedGoogleAccount[] = [
+  {
+    email: "mercy.brown.titi@gmail.com",
+    name: "Mercy Brown",
+    username: "mercy",
+  },
+];
+
+export function getSavedGoogleAccounts(): SavedGoogleAccount[] {
+  try {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY_SAVED_GOOGLE_ACCOUNTS);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch {
+    // ignore
+  }
+  return DEFAULT_GOOGLE_ACCOUNTS;
+}
+
+export function saveGoogleAccountToList(account: SavedGoogleAccount): void {
+  try {
+    const existing = getSavedGoogleAccounts();
+    const filtered = existing.filter(
+      (a) => a.email.toLowerCase() !== account.email.toLowerCase()
+    );
+    const updated = [account, ...filtered];
+    localStorage.setItem(
+      LOCAL_STORAGE_KEY_SAVED_GOOGLE_ACCOUNTS,
+      JSON.stringify(updated)
+    );
+  } catch {
+    // ignore
+  }
 }
 
 export function getLastGoogleAccount(): LastGoogleAccount {
@@ -195,11 +241,7 @@ export function getLastGoogleAccount(): LastGoogleAccount {
     // ignore
   }
   // Default to Mercy Brown account if first time
-  return {
-    email: "mercy.brown.titi@gmail.com",
-    name: "Mercy Brown",
-    username: "mercy",
-  };
+  return DEFAULT_GOOGLE_ACCOUNTS[0];
 }
 
 export async function signInWithGoogle(
@@ -211,16 +253,19 @@ export async function signInWithGoogle(
   const defaultDisplayName = customName?.trim() || googleEmail.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   const chosenUsername = (username?.trim() || googleEmail.split("@")[0].replace(/[^a-zA-Z0-9_-]/g, "")).toLowerCase();
   
-  // Save as last Google account for quick device sign-in
+  const googleAccountObj: SavedGoogleAccount = {
+    email: googleEmail,
+    name: defaultDisplayName,
+    username: chosenUsername,
+  };
+
+  // Save as last Google account and add to saved Google accounts list
   try {
     localStorage.setItem(
       LOCAL_STORAGE_KEY_LAST_GOOGLE,
-      JSON.stringify({
-        email: googleEmail,
-        name: defaultDisplayName,
-        username: chosenUsername,
-      })
+      JSON.stringify(googleAccountObj)
     );
+    saveGoogleAccountToList(googleAccountObj);
   } catch {
     // ignore
   }
