@@ -1,5 +1,3 @@
-import type { Config } from "@netlify/functions";
-
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), {
     status,
@@ -160,8 +158,4 @@ export default async (req: Request) => {
     console.error("Angel API error", path, error);
     return json({ error: error?.message || "Angel could not complete that operation." }, 500);
   }
-};
-
-export const config: Config = {
-  path: "/api/*",
 };
