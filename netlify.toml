@@ -10,9 +10,11 @@
   node_bundler = "esbuild"
 
 # Route Angel's secure server-side API through the Netlify Function.
+# Preserve the requested API path so the function can dispatch /chat/generate,
+# /vision/analyze, /memory/*, /intelligence/*, etc.
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/api"
+  to = "/.netlify/functions/api/:splat"
   status = 200
   force = true
 
