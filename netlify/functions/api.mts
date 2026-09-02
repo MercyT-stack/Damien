@@ -22,6 +22,51 @@ export default async (req: Request) => {
       return json({ status: "ok", app: "ANGEL", runtime: "netlify-functions", timestamp: new Date().toISOString() });
     }
 
+    // Real SSE chat endpoint. The client should stay on this route instead of
+    // waiting for a long non-streamed Gemini request.
+    if (req.method === "POST" && path === "/chat/stream") {
+      const { streamAngelResponse } = await import("../../server/services/geminiService.js");
+      if (!Array.isArray(body.messages) || body.messages.length === 0) {
+        return json({ error: "Invalid messages payload." }, 400);
+      }
+
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream<Uint8Array>({
+        async start(controller) {
+          const send = (payload: unknown) => {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`));
+          };
+
+          try {
+            for await (const chunk of streamAngelResponse({
+              messages: body.messages,
+              intelligenceLevel: body.intelligenceLevel || "standard",
+              contextOptions: body.contextOptions,
+            })) {
+              if (chunk) send({ chunk });
+            }
+            send("[DONE]");
+            controller.close();
+          } catch (error: any) {
+            console.error("Angel streaming API error", error);
+            send({ error: error?.message || "Angel could not generate a response." });
+            send("[DONE]");
+            controller.close();
+          }
+        },
+      });
+
+      return new Response(stream, {
+        status: 200,
+        headers: {
+          "content-type": "text/event-stream; charset=utf-8",
+          "cache-control": "no-cache, no-store, must-revalidate",
+          "connection": "keep-alive",
+          "x-accel-buffering": "no",
+        },
+      });
+    }
+
     if (req.method === "POST" && path === "/chat/generate") {
       const { generateAngelResponse } = await import("../../server/services/geminiService.js");
       if (!Array.isArray(body.messages) || body.messages.length === 0) return json({ error: "Invalid messages payload." }, 400);
