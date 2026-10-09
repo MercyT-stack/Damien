@@ -30,7 +30,8 @@ import {
   Presentation,
   CheckCircle2,
   Download,
-  Eye
+  Eye,
+  Clock
 } from "lucide-react";
 import { ToolArtifact } from "../types/toolTypes";
 
@@ -91,6 +92,66 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
     }
   };
 
+  const formatMessageTime = (dateInput?: string | Date) => {
+    if (!dateInput) return "";
+    const d = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+    if (isNaN(d.getTime())) return "";
+    return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  };
+
+  const formatFullDateTime = (dateInput?: string | Date) => {
+    if (!dateInput) return "";
+    const d = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+    if (isNaN(d.getTime())) return "";
+    return d.toLocaleString([], {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  };
+
+  const formatDateDivider = (dateInput?: string | Date) => {
+    if (!dateInput) return "";
+    const d = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+    if (isNaN(d.getTime())) return "";
+
+    const now = new Date();
+    const isToday =
+      d.getDate() === now.getDate() &&
+      d.getMonth() === now.getMonth() &&
+      d.getFullYear() === now.getFullYear();
+
+    const yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+    const isYesterday =
+      d.getDate() === yesterday.getDate() &&
+      d.getMonth() === yesterday.getMonth() &&
+      d.getFullYear() === yesterday.getFullYear();
+
+    if (isToday) return "Today";
+    if (isYesterday) return "Yesterday";
+    return d.toLocaleDateString([], {
+      month: "short",
+      day: "numeric",
+      year: d.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
+    });
+  };
+
+  const isSameDay = (d1Str?: string, d2Str?: string) => {
+    if (!d1Str || !d2Str) return false;
+    const d1 = new Date(d1Str);
+    const d2 = new Date(d2Str);
+    if (isNaN(d1.getTime()) || isNaN(d2.getTime())) return false;
+    return (
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate()
+    );
+  };
+
   return (
     <div id="angel-chat-area" className="flex-1 overflow-y-auto px-4 py-6">
       {/* Global Capability Modals */}
@@ -141,103 +202,139 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
         ) : (
           /* Messages Stream */
           <div className="space-y-6">
-            {messages.map((msg) => {
+            {messages.map((msg, index) => {
               const isUser = msg.role === "user";
               const isVoiceMsg = msg.metadata?.modality === "voice" || msg.metadata?.voice;
               const toolCalls = msg.metadata?.toolCalls || [];
               const sources = msg.metadata?.sources || [];
               const artifacts = (msg.metadata?.artifacts || []) as ToolArtifact[];
 
+              const prevMsg = index > 0 ? messages[index - 1] : null;
+              const showDateDivider = index === 0 || !isSameDay(prevMsg?.created_at, msg.created_at);
+              const formattedTime = formatMessageTime(msg.created_at);
+              const fullDateTime = formatFullDateTime(msg.created_at);
+
               return (
-                <div
-                  key={msg.id}
-                  id={`message-${msg.id}`}
-                  className={`flex gap-3 ${isUser ? "justify-end" : "justify-start"} animate-fadeIn`}
-                >
-                  {/* Angel Avatar on Left */}
-                  {!isUser && (
-                    <div className="w-8 h-8 rounded-xl bg-neutral-900 border border-cyan-500/40 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
-                      <AngelLogo size="xs" />
+                <React.Fragment key={msg.id}>
+                  {/* Calendar Day Divider */}
+                  {showDateDivider && (
+                    <div className="flex items-center justify-center my-4 select-none animate-fadeIn">
+                      <div className="h-px bg-neutral-200 dark:bg-neutral-800/80 flex-1 max-w-[60px] sm:max-w-[100px]" />
+                      <span className="mx-3 px-3 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-[11px] font-medium text-neutral-500 dark:text-neutral-400 tracking-wide font-mono">
+                        {formatDateDivider(msg.created_at)}
+                      </span>
+                      <div className="h-px bg-neutral-200 dark:bg-neutral-800/80 flex-1 max-w-[60px] sm:max-w-[100px]" />
                     </div>
                   )}
 
-                  {/* Message Bubble Container */}
                   <div
-                    className={`relative max-w-[85%] sm:max-w-[80%] group rounded-2xl p-4 sm:p-5 text-sm leading-relaxed ${
-                      isUser
-                        ? "bg-white text-neutral-950 dark:bg-white dark:text-neutral-950 font-normal rounded-tr-xs shadow-md border border-neutral-200/60 dark:border-transparent"
-                        : "bg-[#131314] text-neutral-100 border border-neutral-800/90 rounded-tl-xs shadow-md"
-                    }`}
+                    id={`message-${msg.id}`}
+                    className={`flex gap-3 ${isUser ? "justify-end" : "justify-start"} animate-fadeIn`}
                   >
-                    {/* Header for Angel: Exact visual style matching screenshot */}
+                    {/* Angel Avatar on Left */}
                     {!isUser && (
-                      <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-neutral-800/80 text-xs">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold tracking-wider uppercase text-cyan-500 text-[11px]">
-                            ANGEL
-                          </span>
-                          {isVoiceMsg && (
-                            <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-md bg-cyan-500/10 text-cyan-400 font-medium">
-                              <Volume2 className="w-3 h-3" />
-                              <span>Spoken</span>
-                            </span>
-                          )}
-                          {toolCalls.length > 0 && (
-                            <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-md bg-cyan-500/10 text-cyan-400 font-mono">
-                              <CheckCircle2 className="w-3 h-3" />
-                              <span>{toolCalls[0].toolName || "Tool Executed"}</span>
-                            </span>
-                          )}
-                        </div>
-                        <button
-                          id={`btn-copy-msg-${msg.id}`}
-                          onClick={() => handleCopy(msg.content, msg.id)}
-                          className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-neutral-400 hover:text-white hover:bg-neutral-800 transition-opacity"
-                          title="Copy response"
-                        >
-                          {copiedMsgId === msg.id ? (
-                            <Check className="w-3.5 h-3.5 text-emerald-500" />
-                          ) : (
-                            <Copy className="w-3.5 h-3.5" />
-                          )}
-                        </button>
+                      <div className="w-8 h-8 rounded-xl bg-neutral-900 border border-cyan-500/40 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                        <AngelLogo size="xs" />
                       </div>
                     )}
 
-                    {/* Message Body */}
-                    {isUser ? (
-                      <div className="space-y-2.5">
-                        {msg.metadata?.previewUrl && (
-                          <div className="rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-sm max-w-sm">
-                            {msg.metadata.mediaType?.startsWith("video/") || msg.metadata.previewUrl.startsWith("data:video/") ? (
-                              <video
-                                src={msg.metadata.previewUrl}
-                                controls
-                                playsInline
-                                className="w-full h-auto max-h-64 object-contain bg-black"
-                              />
-                            ) : (
-                              <img
-                                src={msg.metadata.previewUrl}
-                                alt={msg.metadata.mediaName || "Attached image"}
-                                className="w-full h-auto max-h-64 object-contain bg-neutral-900"
-                              />
+                    {/* Message Bubble Container */}
+                    <div
+                      className={`relative max-w-[85%] sm:max-w-[80%] group rounded-2xl p-4 sm:p-5 text-sm leading-relaxed ${
+                        isUser
+                          ? "bg-white text-neutral-950 dark:bg-white dark:text-neutral-950 font-normal rounded-tr-xs shadow-md border border-neutral-200/60 dark:border-transparent"
+                          : "bg-[#131314] text-neutral-100 border border-neutral-800/90 rounded-tl-xs shadow-md"
+                      }`}
+                    >
+                      {/* Header for Angel: Exact visual style matching screenshot */}
+                      {!isUser && (
+                        <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-neutral-800/80 text-xs gap-2">
+                          <div className="flex items-center gap-2 flex-wrap min-w-0">
+                            <span className="font-bold tracking-wider uppercase text-cyan-500 text-[11px]">
+                              ANGEL
+                            </span>
+                            {isVoiceMsg && (
+                              <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-md bg-cyan-500/10 text-cyan-400 font-medium">
+                                <Volume2 className="w-3 h-3" />
+                                <span>Spoken</span>
+                              </span>
                             )}
-                            {msg.metadata.mediaName && (
-                              <div className="px-3 py-1.5 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 text-[11px] text-neutral-600 dark:text-neutral-300 flex items-center justify-between font-mono">
-                                <span className="truncate">{msg.metadata.mediaName}</span>
-                                {msg.metadata.sourceType && (
-                                  <span className="capitalize font-sans px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-[9px]">
-                                    {msg.metadata.sourceType}
-                                  </span>
-                                )}
-                              </div>
+                            {toolCalls.length > 0 && (
+                              <span className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-md bg-cyan-500/10 text-cyan-400 font-mono">
+                                <CheckCircle2 className="w-3 h-3" />
+                                <span>{toolCalls[0].toolName || "Tool Executed"}</span>
+                              </span>
                             )}
                           </div>
-                        )}
-                        <div className="whitespace-pre-wrap text-neutral-900 font-normal">{msg.content}</div>
-                      </div>
-                    ) : (
+                          <div className="flex items-center gap-2 shrink-0">
+                            {formattedTime && (
+                              <span
+                                className="text-[10px] font-mono text-neutral-400 flex items-center gap-1 select-none"
+                                title={fullDateTime}
+                              >
+                                <Clock className="w-3 h-3 opacity-60" />
+                                <span>{formattedTime}</span>
+                              </span>
+                            )}
+                            <button
+                              id={`btn-copy-msg-${msg.id}`}
+                              onClick={() => handleCopy(msg.content, msg.id)}
+                              className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-neutral-400 hover:text-white hover:bg-neutral-800 transition-opacity"
+                              title="Copy response"
+                            >
+                              {copiedMsgId === msg.id ? (
+                                <Check className="w-3.5 h-3.5 text-emerald-500" />
+                              ) : (
+                                <Copy className="w-3.5 h-3.5" />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Message Body */}
+                      {isUser ? (
+                        <div className="space-y-2.5">
+                          {msg.metadata?.previewUrl && (
+                            <div className="rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-sm max-w-sm">
+                              {msg.metadata.mediaType?.startsWith("video/") || msg.metadata.previewUrl.startsWith("data:video/") ? (
+                                <video
+                                  src={msg.metadata.previewUrl}
+                                  controls
+                                  playsInline
+                                  className="w-full h-auto max-h-64 object-contain bg-black"
+                                />
+                              ) : (
+                                <img
+                                  src={msg.metadata.previewUrl}
+                                  alt={msg.metadata.mediaName || "Attached image"}
+                                  className="w-full h-auto max-h-64 object-contain bg-neutral-900"
+                                />
+                              )}
+                              {msg.metadata.mediaName && (
+                                <div className="px-3 py-1.5 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 text-[11px] text-neutral-600 dark:text-neutral-300 flex items-center justify-between font-mono">
+                                  <span className="truncate">{msg.metadata.mediaName}</span>
+                                  {msg.metadata.sourceType && (
+                                    <span className="capitalize font-sans px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-[9px]">
+                                      {msg.metadata.sourceType}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                          <div className="whitespace-pre-wrap text-neutral-900 font-normal break-words">{msg.content}</div>
+                          {formattedTime && (
+                            <div
+                              className="flex items-center justify-end gap-1 pt-1 text-[10px] text-neutral-500 select-none font-mono tracking-tight"
+                              title={fullDateTime}
+                            >
+                              <Clock className="w-2.5 h-2.5 opacity-60" />
+                              <span>{formattedTime}</span>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
                       <div className="space-y-3">
                         <div className="markdown-body prose prose-invert max-w-none text-sm space-y-3 font-normal leading-relaxed text-neutral-200">
                           <Markdown>{msg.content}</Markdown>
@@ -315,6 +412,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                     />
                   )}
                 </div>
+              </React.Fragment>
               );
             })}
 
@@ -322,9 +420,15 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
             {isVoiceActive && liveTranscript.user && (
               <div className="flex gap-3 justify-end animate-fadeIn">
                 <div className="relative max-w-[85%] sm:max-w-[80%] rounded-2xl p-4 sm:p-5 text-sm leading-relaxed bg-white text-neutral-950 rounded-tr-xs shadow-md border border-cyan-500/40">
-                  <div className="flex items-center gap-1.5 text-[10px] text-cyan-600 font-semibold mb-1">
-                    <Radio className="w-3 h-3 animate-pulse" />
-                    <span>Speaking live...</span>
+                  <div className="flex items-center justify-between text-[10px] text-cyan-600 font-semibold mb-1 gap-2">
+                    <div className="flex items-center gap-1.5">
+                      <Radio className="w-3 h-3 animate-pulse" />
+                      <span>Speaking live...</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-neutral-500 flex items-center gap-1">
+                      <Clock className="w-2.5 h-2.5 opacity-60" />
+                      <span>{formatMessageTime(new Date())}</span>
+                    </span>
                   </div>
                   <div className="italic text-neutral-900">{liveTranscript.user}</div>
                 </div>
@@ -354,7 +458,13 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                         (Live Voice: {selectedVoice.name})
                       </span>
                     </div>
-                    <span className="inline-block w-2 h-2 rounded-full bg-cyan-500 animate-ping" />
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-mono text-neutral-400 flex items-center gap-1 select-none">
+                        <Clock className="w-3 h-3 opacity-60" />
+                        <span>{formatMessageTime(new Date())}</span>
+                      </span>
+                      <span className="inline-block w-2 h-2 rounded-full bg-cyan-500 animate-ping" />
+                    </div>
                   </div>
 
                   <div className="markdown-body prose prose-invert max-w-none text-sm space-y-3 font-normal leading-relaxed text-neutral-200">
@@ -376,7 +486,13 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                     <span className="font-bold tracking-wider uppercase text-cyan-500 text-[11px]">
                       ANGEL
                     </span>
-                    <span className="inline-block w-2 h-2 rounded-full bg-cyan-500 animate-ping" />
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-mono text-neutral-400 flex items-center gap-1 select-none">
+                        <Clock className="w-3 h-3 opacity-60" />
+                        <span>{formatMessageTime(new Date())}</span>
+                      </span>
+                      <span className="inline-block w-2 h-2 rounded-full bg-cyan-500 animate-ping" />
+                    </div>
                   </div>
 
                   {streamingMessage ? (
