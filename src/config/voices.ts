@@ -195,11 +195,72 @@ export const VOICE_CATALOG: VoiceConfig[] = [
   },
 ];
 
+export interface VoiceToneOption {
+  id: "conversational" | "formal" | "excited" | "calm" | "warm" | "concise";
+  label: string;
+  description: string;
+  pitchMultiplier: number;
+  rateMultiplier: number;
+  speechGuidance: string;
+}
+
+export const VOICE_TONES: VoiceToneOption[] = [
+  {
+    id: "conversational",
+    label: "Conversational",
+    description: "Natural, relaxed, and everyday friendly flow",
+    pitchMultiplier: 1.0,
+    rateMultiplier: 1.0,
+    speechGuidance: "Conversational, authentic, and naturally flowing — like speaking with a trusted friend.",
+  },
+  {
+    id: "formal",
+    label: "Formal",
+    description: "Polite, polished, professional, and precise",
+    pitchMultiplier: 0.98,
+    rateMultiplier: 0.95,
+    speechGuidance: "Formal, respectful, articulate, and poised with professional delivery.",
+  },
+  {
+    id: "excited",
+    label: "Excited",
+    description: "High-energy, enthusiastic, and upbeat rhythm",
+    pitchMultiplier: 1.12,
+    rateMultiplier: 1.08,
+    speechGuidance: "Enthusiastic, energetic, lively, and vibrant with bright, engaging inflection.",
+  },
+  {
+    id: "calm",
+    label: "Calm",
+    description: "Grounded, soothing, steady, and tranquil pacing",
+    pitchMultiplier: 0.95,
+    rateMultiplier: 0.92,
+    speechGuidance: "Calm, serene, soothing, and unhurried with mindful, gentle cadence.",
+  },
+  {
+    id: "warm",
+    label: "Warm",
+    description: "Empathetic, reassuring, and comforting resonance",
+    pitchMultiplier: 1.02,
+    rateMultiplier: 0.98,
+    speechGuidance: "Warm, empathetic, deeply supportive, and reassuring with gentle emotional resonance.",
+  },
+  {
+    id: "concise",
+    label: "Concise",
+    description: "Direct, crisp, punchy, and straight to the point",
+    pitchMultiplier: 1.0,
+    rateMultiplier: 1.05,
+    speechGuidance: "Concise, direct, efficient, articulate, and crisp without filler words.",
+  },
+];
+
 export const DEFAULT_USER_VOICE_PREFERENCES: UserVoicePreferences = {
   voice_id: DEFAULT_VOICE_ID,
   language: "auto",
   regional_accent: "automatic",
   speaking_speed: 1.0,
+  voice_tone: "conversational",
   auto_language_detection: true,
   captions_enabled: true,
 };

@@ -28,6 +28,7 @@ export interface VoicePreviewOptions {
   voiceId: string;
   customText?: string;
   language?: string;
+  voiceTone?: string;
 }
 
 export async function generateVoicePreview(options: VoicePreviewOptions): Promise<{
@@ -41,9 +42,10 @@ export async function generateVoicePreview(options: VoicePreviewOptions): Promis
   const voice = getServerVoice(options.voiceId);
   const text = options.customText || voice.defaultSamplePhrase;
   const lang = options.language || "auto";
+  const tone = options.voiceTone || "conversational";
 
   // Check cache first
-  const cacheKey = `${voice.id}_${lang}_${text}`;
+  const cacheKey = `${voice.id}_${lang}_${tone}_${text}`;
   if (previewAudioCache.has(cacheKey)) {
     const cached = previewAudioCache.get(cacheKey)!;
     return {
@@ -56,8 +58,19 @@ export async function generateVoicePreview(options: VoicePreviewOptions): Promis
 
   try {
     const ai = getAiClient();
+    const toneInstructions: Record<string, string> = {
+      conversational: "Deliver this phrase in a natural, conversational, relaxed, and everyday friendly tone — like talking to a close friend.",
+      formal: "Deliver this phrase in a formal, polite, polished, articulate, and poised professional tone.",
+      excited: "Deliver this phrase with enthusiastic, high-energy, lively, and vibrant vocal inflection.",
+      calm: "Deliver this phrase in a calm, soothing, tranquil, steady, and mindful cadence.",
+      warm: "Deliver this phrase in an empathetic, warm, deeply reassuring, and supportive manner.",
+      concise: "Deliver this phrase in a crisp, direct, confident, and punchy manner.",
+    };
+    const toneGuidance = toneInstructions[tone] || toneInstructions.conversational;
+
     const prompt = `You are speaking as Angel with the ${voice.name} voice identity (${voice.styleDescription}).
-Deliver this short sample phrase conversationally, naturally, and warmly — like a real person greeting a friend, NOT reading a script:
+Tone & Style: ${toneGuidance}
+Deliver this short sample phrase naturally:
 "${text}"`;
 
     const response = await ai.models.generateContent({

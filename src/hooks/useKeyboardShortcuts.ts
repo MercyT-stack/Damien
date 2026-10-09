@@ -8,6 +8,7 @@ interface ShortcutHandlers {
   onToggleVoice?: () => void;
   onFocusComposer?: () => void;
   onCloseModals?: () => void;
+  onDownloadChat?: () => void;
 }
 
 export function useKeyboardShortcuts({
@@ -18,6 +19,7 @@ export function useKeyboardShortcuts({
   onToggleVoice,
   onFocusComposer,
   onCloseModals,
+  onDownloadChat,
 }: ShortcutHandlers) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -66,6 +68,25 @@ export function useKeyboardShortcuts({
         e.preventDefault();
         if (onToggleVoice) {
           onToggleVoice();
+        }
+        return;
+      }
+
+      // 6. Cmd + Shift + D / Ctrl + Shift + D -> Download/Export Chat
+      if (isMod && e.shiftKey && (e.key === "d" || e.key === "D")) {
+        e.preventDefault();
+        if (onDownloadChat) {
+          onDownloadChat();
+        }
+        return;
+      }
+
+      // 7. Cmd + Shift + R / Ctrl + Shift + R -> Read Aloud Chat
+      if (isMod && e.shiftKey && (e.key === "r" || e.key === "R")) {
+        e.preventDefault();
+        const btn = document.getElementById("btn-read-aloud-chat");
+        if (btn) {
+          btn.click();
         }
         return;
       }

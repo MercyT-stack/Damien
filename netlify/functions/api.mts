@@ -111,22 +111,22 @@ export default async (req: Request) => {
 
     if (req.method === "POST" && path === "/orchestration/classify") {
       const { classifyUserIntent } = await import("../../server/services/agentOrchestratorService.js");
-      return json(await classifyUserIntent(body));
+      return json(await classifyUserIntent(body as any));
     }
 
     if (req.method === "POST" && path === "/orchestration/plan") {
       const { generateDynamicPlan } = await import("../../server/services/agentOrchestratorService.js");
-      return json({ steps: await generateDynamicPlan(body) });
+      return json({ steps: await generateDynamicPlan(body as any) });
     }
 
     if (req.method === "POST" && path === "/orchestration/replan") {
       const { replanTask } = await import("../../server/services/agentOrchestratorService.js");
-      return json(await replanTask(body));
+      return json(await replanTask(body as any));
     }
 
     if (req.method === "POST" && path === "/orchestration/verify") {
       const { verifyTaskQuality } = await import("../../server/services/agentOrchestratorService.js");
-      return json({ verification: await verifyTaskQuality(body) });
+      return json({ verification: await verifyTaskQuality(body as any) });
     }
 
     if (req.method === "POST" && path === "/orchestration/command-intent") {
@@ -152,7 +152,7 @@ export default async (req: Request) => {
 
     if (req.method === "POST" && path === "/action/classify-and-plan") {
       const { classifyAndConstructActionPlan } = await import("../../server/services/actionEngineService.js");
-      return json({ plan: await classifyAndConstructActionPlan(body) });
+      return json({ plan: await classifyAndConstructActionPlan(body as any) });
     }
 
     if (req.method === "POST" && path === "/action/execute-application") {
@@ -170,12 +170,12 @@ export default async (req: Request) => {
 
     if (req.method === "POST" && path === "/intelligence/current-info") {
       const { fetchCurrentWorldInfo } = await import("../../server/services/realtimeIntelligenceService.js");
-      return json(await fetchCurrentWorldInfo(body));
+      return json(await fetchCurrentWorldInfo(body as any));
     }
 
     if (req.method === "POST" && path === "/intelligence/briefing") {
       const { generateProactiveBriefing } = await import("../../server/services/realtimeIntelligenceService.js");
-      return json({ briefing: await generateProactiveBriefing(body) });
+      return json({ briefing: await generateProactiveBriefing(body as any) });
     }
 
     if (req.method === "GET" && path === "/intelligence/upgrades") {
@@ -190,7 +190,7 @@ export default async (req: Request) => {
 
     if (req.method === "POST" && path === "/intelligence/project-synergy") {
       const { analyzeProjectWorldSynergy } = await import("../../server/services/realtimeIntelligenceService.js");
-      return json({ synergy: await analyzeProjectWorldSynergy(body) });
+      return json({ synergy: await analyzeProjectWorldSynergy(body as any) });
     }
 
     if (req.method === "POST" && path === "/voice/preview") {

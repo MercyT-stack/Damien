@@ -58,11 +58,20 @@ export interface VoiceConfig {
   samplePhrases: Record<string, string>; // Language code -> sample phrase
 }
 
+export type VoiceTone =
+  | "conversational"
+  | "formal"
+  | "excited"
+  | "calm"
+  | "warm"
+  | "concise";
+
 export interface UserVoicePreferences {
   voice_id: string;
   language: string;
   regional_accent?: string;
   speaking_speed: number; // 0.8 to 1.2
+  voice_tone?: VoiceTone; // Auditory feedback tone (e.g. conversational, formal, excited, calm, warm, concise)
   auto_language_detection: boolean;
   captions_enabled: boolean;
 }

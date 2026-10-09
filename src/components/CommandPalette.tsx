@@ -24,7 +24,9 @@ import {
   Sliders,
   Database,
   Radio,
-  FileText
+  FileText,
+  Download,
+  Volume2
 } from "lucide-react";
 
 interface CommandPaletteProps {
@@ -32,6 +34,7 @@ interface CommandPaletteProps {
   onClose: () => void;
   onOpenSettings: (tab?: SettingsTab) => void;
   onToggleSidebar: () => void;
+  onOpenDownloadChat?: () => void;
 }
 
 interface CommandItem {
@@ -49,6 +52,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onClose,
   onOpenSettings,
   onToggleSidebar,
+  onOpenDownloadChat,
 }) => {
   const {
     conversations,
@@ -132,6 +136,37 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       shortcut: `${modKey}B`,
       action: () => {
         onToggleSidebar();
+        onClose();
+      },
+    });
+
+    list.push({
+      id: "action-download-chat",
+      title: "Download Conversation",
+      subtitle: "Export current chat history as formatted PDF, JSON, or Markdown",
+      category: "Actions",
+      icon: <Download className="w-4 h-4 text-cyan-500" />,
+      shortcut: `${modKey}Shift+D`,
+      action: () => {
+        if (onOpenDownloadChat) {
+          onOpenDownloadChat();
+        }
+        onClose();
+      },
+    });
+
+    list.push({
+      id: "action-read-aloud-chat",
+      title: "Read Aloud Conversation",
+      subtitle: "Auditory playback of chat messages using Web Speech API",
+      category: "Actions",
+      icon: <Volume2 className="w-4 h-4 text-cyan-500" />,
+      shortcut: `${modKey}Shift+R`,
+      action: () => {
+        const btn = document.getElementById("btn-read-aloud-chat");
+        if (btn) {
+          btn.click();
+        }
         onClose();
       },
     });

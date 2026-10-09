@@ -100,7 +100,7 @@ export const VoiceProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     // Automatically trigger short natural voice sample
     setIsPlayingSample(newVoice.id);
     try {
-      const res = await playVoiceSample(newVoice, voiceSettings.language);
+      const res = await playVoiceSample(newVoice, voiceSettings.language, voiceSettings.voice_tone);
       if (res.ttfaMs > 0) {
         setLastTtfaMs(res.ttfaMs);
       }
@@ -118,6 +118,21 @@ export const VoiceProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
     setVoiceSettings(updated);
     await saveUserVoicePreferences(user?.id, updated);
+
+    // If tone was updated, provide auditory sample preview of the new tone
+    if (partial.voice_tone && partial.voice_tone !== voiceSettings.voice_tone) {
+      setIsPlayingSample(selectedVoice.id);
+      try {
+        const res = await playVoiceSample(selectedVoice, updated.language, partial.voice_tone);
+        if (res.ttfaMs > 0) {
+          setLastTtfaMs(res.ttfaMs);
+        }
+      } catch (err) {
+        console.warn("Tone sample preview failed:", err);
+      } finally {
+        setIsPlayingSample(null);
+      }
+    }
   };
 
   const clearVoiceError = () => setError(null);
@@ -163,7 +178,8 @@ export const VoiceProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           () => {
             setVoiceState("listening");
             setCurrentVolume(0);
-          }
+          },
+          voiceSettings.voice_tone
         );
       } catch (e) {
         console.warn("Speech response playback failed:", e);
@@ -171,7 +187,7 @@ export const VoiceProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setCurrentVolume(0);
       }
     },
-    [selectedVoice, voiceSettings.language, isMuted, isPaused]
+    [selectedVoice, voiceSettings.language, voiceSettings.voice_tone, isMuted, isPaused]
   );
 
   const startVoiceSession = useCallback(async () => {

@@ -28,6 +28,7 @@ interface VoiceSessionInitConfig {
   language?: string;
   speakingSpeed?: number;
   userName?: string;
+  voiceTone?: string;
 }
 
 function buildSpokenSystemPrompt(config: VoiceSessionInitConfig): string {
@@ -36,10 +37,22 @@ function buildSpokenSystemPrompt(config: VoiceSessionInitConfig): string {
       ? `\n- Spoken Language: Speak natively and comfortably in ${config.language}. Express ideas with authentic pronunciation and colloquial naturalness for that language.`
       : `\n- Multilingual Adaptation: Listen and naturally reply in whatever language the user speaks to you (English, Spanish, Korean, Yoruba, French, German, Japanese, Arabic, etc.).`;
 
+  const toneInstructions: Record<string, string> = {
+    conversational: "Natural, relaxed, and everyday friendly flow — speak like an intelligent, easygoing collaborator.",
+    formal: "Formal, respectful, polite, precise, and professional delivery with poise.",
+    excited: "Enthusiastic, energetic, lively, and upbeat with expressive cadence and positive vocal energy.",
+    calm: "Calm, serene, tranquil, soothing, and unhurried with mindful, steady delivery.",
+    warm: "Empathetic, deeply supportive, warm, reassuring, and comforting with gentle emotional resonance.",
+    concise: "Concise, crisp, direct, articulate, and punchy without unnecessary elaboration.",
+  };
+  const toneDesc = config.voiceTone && toneInstructions[config.voiceTone]
+    ? `\n- Voice Tone & Auditory Style: ${toneInstructions[config.voiceTone]}`
+    : `\n- Voice Tone & Auditory Style: ${toneInstructions.conversational}`;
+
   return `${ANGEL_SYSTEM_PROMPT}
 
 [REAL-TIME LIVE SPOKEN CONVERSATION MODE ACTIVE]
-You are in a live, bidirectional spoken voice conversation with the user${config.userName ? ` (${config.userName})` : ""}.
+You are in a live, bidirectional spoken voice conversation with the user${config.userName ? ` (${config.userName})` : ""}.${toneDesc}
 
 CRITICAL SPOKEN BEHAVIOR PRINCIPLES:
 1. NATURAL CONVERSATION — You are Angel, talking with someone you know and respect.

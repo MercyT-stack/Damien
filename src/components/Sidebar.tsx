@@ -5,6 +5,9 @@ import { useAuth } from "../contexts/AuthContext";
 import { useMemory } from "../contexts/MemoryContext";
 import { SettingsTab } from "./SettingsModal";
 import { UserAvatar } from "./UserAvatar";
+import { DownloadChatModal } from "./DownloadChatModal";
+import { fetchMessages } from "../services/conversationService";
+import { Conversation, Message } from "../types";
 import { 
   Plus, 
   Search, 
@@ -27,6 +30,7 @@ import {
   Folder,
   Layers,
   Fingerprint,
+  Download,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -69,7 +73,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const [isAddingProject, setIsAddingProject] = useState<boolean>(false);
   const [newProjectName, setNewProjectName] = useState<string>("");
   const [isCreatingProject, setIsCreatingProject] = useState<boolean>(false);
+  const [downloadConv, setDownloadConv] = useState<Conversation | null>(null);
+  const [downloadMessages, setDownloadMessages] = useState<Message[]>([]);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
   const projectInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDownloadConversation = async (e: React.MouseEvent, conv: Conversation) => {
+    e.stopPropagation();
+    try {
+      const msgs = await fetchMessages(conv.id);
+      setDownloadConv(conv);
+      setDownloadMessages(msgs);
+      setIsDownloadModalOpen(true);
+    } catch (err) {
+      console.error("Failed to load conversation messages for download:", err);
+    }
+  };
 
   // Focus project input when opening inline creator
   useEffect(() => {
@@ -136,6 +155,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <>
+      {/* Download Conversation Modal */}
+      <DownloadChatModal
+        isOpen={isDownloadModalOpen}
+        onClose={() => setIsDownloadModalOpen(false)}
+        conversation={downloadConv}
+        messages={downloadMessages}
+        userInfo={{
+          name: user?.name,
+          email: user?.email,
+          nickname: user?.username || user?.display_name || user?.name,
+        }}
+      />
+
       {/* Mobile Backdrop */}
       {isOpen && (
         <div
@@ -458,6 +490,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         </button>
                       ) : (
                         <>
+                          <button
+                            id={`btn-download-conv-${conv.id}`}
+                            onClick={(e) => handleDownloadConversation(e, conv)}
+                            className="opacity-0 group-hover:opacity-100 p-1 text-neutral-400 hover:text-cyan-500 rounded hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 transition shrink-0"
+                            title="Download / Export Chat (PDF, JSON)"
+                            aria-label={`Download conversation ${conv.title}`}
+                          >
+                            <Download className="w-3.5 h-3.5" />
+                          </button>
                           <button
                             onClick={(e) => handleStartRename(e, conv.id, conv.title || "New Conversation")}
                             className="opacity-0 group-hover:opacity-100 p-1 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 rounded transition"

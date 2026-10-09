@@ -23,6 +23,7 @@ export async function fetchUserVoicePreferences(userId?: string): Promise<UserVo
           language: data.language || DEFAULT_USER_VOICE_PREFERENCES.language,
           regional_accent: data.regional_accent || DEFAULT_USER_VOICE_PREFERENCES.regional_accent,
           speaking_speed: Number(data.speaking_speed) || DEFAULT_USER_VOICE_PREFERENCES.speaking_speed,
+          voice_tone: data.voice_tone || DEFAULT_USER_VOICE_PREFERENCES.voice_tone,
           auto_language_detection: data.auto_language_detection ?? true,
           captions_enabled: data.captions_enabled ?? true,
         };
@@ -68,6 +69,7 @@ export async function saveUserVoicePreferences(
         language: preferences.language,
         regional_accent: preferences.regional_accent,
         speaking_speed: preferences.speaking_speed,
+        voice_tone: preferences.voice_tone,
         auto_language_detection: preferences.auto_language_detection,
         captions_enabled: preferences.captions_enabled,
         updated_at: new Date().toISOString(),
@@ -110,7 +112,12 @@ export function stopVoiceSample(): void {
 /**
  * Fallback synthesizer using Web Speech API with tailored pitch and rate
  */
-function playSpeechSynthesisFallback(voice: VoiceConfig, phrase: string, languageCode: string): Promise<{ ttfaMs: number }> {
+function playSpeechSynthesisFallback(
+  voice: VoiceConfig,
+  phrase: string,
+  languageCode: string,
+  voiceTone?: string
+): Promise<{ ttfaMs: number }> {
   return new Promise((resolve) => {
     if (typeof window === "undefined" || !window.speechSynthesis) {
       resolve({ ttfaMs: 0 });
@@ -126,20 +133,40 @@ function playSpeechSynthesisFallback(voice: VoiceConfig, phrase: string, languag
       utterance.lang = "en-US";
     }
 
-    // Adapt pitch and rate slightly based on voice identity
+    // Adapt pitch and rate based on voice identity and tone
     const isFeminine = voice.genderPresentation?.toLowerCase().includes("fem");
     const isMasculine = voice.genderPresentation?.toLowerCase().includes("masc");
 
+    let basePitch = 1.0;
+    let baseRate = 1.0;
+
     if (isFeminine) {
-      utterance.pitch = voice.name === "NOVA" ? 1.2 : 1.05;
-      utterance.rate = 1.0;
+      basePitch = voice.name === "NOVA" ? 1.2 : 1.05;
+      baseRate = 1.0;
     } else if (isMasculine) {
-      utterance.pitch = voice.name === "ONYX" ? 0.8 : 0.95;
-      utterance.rate = 0.98;
-    } else {
-      utterance.pitch = 1.0;
-      utterance.rate = 1.0;
+      basePitch = voice.name === "ONYX" ? 0.8 : 0.95;
+      baseRate = 0.98;
     }
+
+    // Apply voice tone modifier
+    if (voiceTone === "excited") {
+      basePitch *= 1.15;
+      baseRate *= 1.08;
+    } else if (voiceTone === "calm") {
+      basePitch *= 0.94;
+      baseRate *= 0.92;
+    } else if (voiceTone === "formal") {
+      basePitch *= 0.98;
+      baseRate *= 0.95;
+    } else if (voiceTone === "warm") {
+      basePitch *= 1.03;
+      baseRate *= 0.98;
+    } else if (voiceTone === "concise") {
+      baseRate *= 1.06;
+    }
+
+    utterance.pitch = Math.max(0.6, Math.min(1.8, basePitch));
+    utterance.rate = Math.max(0.6, Math.min(1.8, baseRate));
 
     // Try finding a matching browser voice
     const voices = window.speechSynthesis.getVoices();
@@ -173,7 +200,8 @@ function playSpeechSynthesisFallback(voice: VoiceConfig, phrase: string, languag
 
 export async function playVoiceSample(
   voice: VoiceConfig,
-  languageCode: string = "auto"
+  languageCode: string = "auto",
+  voiceTone?: string
 ): Promise<{ ttfaMs: number }> {
   // 1. Immediately cancel any currently playing sample or active fetch
   stopVoiceSample();
@@ -193,17 +221,18 @@ export async function playVoiceSample(
         voiceId: voice.id,
         customText: phrase,
         language: languageCode || "auto",
+        voiceTone: voiceTone || "conversational",
       }),
     });
 
     if (!response.ok) {
-      return await playSpeechSynthesisFallback(voice, phrase, languageCode);
+      return await playSpeechSynthesisFallback(voice, phrase, languageCode, voiceTone);
     }
 
     const data = await response.json();
 
     if (data.fallback || !data.audioBase64) {
-      return await playSpeechSynthesisFallback(voice, phrase, languageCode);
+      return await playSpeechSynthesisFallback(voice, phrase, languageCode, voiceTone);
     }
 
     const base64Audio = data.audioBase64;
@@ -289,7 +318,8 @@ export async function speakAngelSpokenResponse(
   languageCode: string = "auto",
   onStart?: () => void,
   onVolume?: (volume: number) => void,
-  onEnd?: () => void
+  onEnd?: () => void,
+  voiceTone?: string
 ): Promise<void> {
   const spokenText = cleanSpokenText(rawText);
   if (!spokenText) {
@@ -331,6 +361,7 @@ export async function speakAngelSpokenResponse(
         voiceId: voice.id,
         customText: spokenText.length > 300 ? spokenText.slice(0, 300) : spokenText,
         language: languageCode || "auto",
+        voiceTone: voiceTone || "conversational",
       }),
     });
 
@@ -420,16 +451,35 @@ export async function speakAngelSpokenResponse(
     const isFeminine = voice.genderPresentation?.toLowerCase().includes("fem");
     const isMasculine = voice.genderPresentation?.toLowerCase().includes("masc");
 
+    let basePitch = 1.0;
+    let baseRate = 1.0;
+
     if (isFeminine) {
-      utterance.pitch = voice.name === "NOVA" ? 1.2 : 1.05;
-      utterance.rate = 1.02;
+      basePitch = voice.name === "NOVA" ? 1.2 : 1.05;
+      baseRate = 1.02;
     } else if (isMasculine) {
-      utterance.pitch = voice.name === "ONYX" ? 0.8 : 0.95;
-      utterance.rate = 1.0;
-    } else {
-      utterance.pitch = 1.0;
-      utterance.rate = 1.0;
+      basePitch = voice.name === "ONYX" ? 0.8 : 0.95;
+      baseRate = 1.0;
     }
+
+    if (voiceTone === "excited") {
+      basePitch *= 1.15;
+      baseRate *= 1.08;
+    } else if (voiceTone === "calm") {
+      basePitch *= 0.94;
+      baseRate *= 0.92;
+    } else if (voiceTone === "formal") {
+      basePitch *= 0.98;
+      baseRate *= 0.95;
+    } else if (voiceTone === "warm") {
+      basePitch *= 1.03;
+      baseRate *= 0.98;
+    } else if (voiceTone === "concise") {
+      baseRate *= 1.06;
+    }
+
+    utterance.pitch = Math.max(0.6, Math.min(1.8, basePitch));
+    utterance.rate = Math.max(0.6, Math.min(1.8, baseRate));
 
     const voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {

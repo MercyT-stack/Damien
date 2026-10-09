@@ -4,7 +4,8 @@ import { useAuth } from "../contexts/AuthContext";
 import { useVoice } from "../contexts/VoiceContext";
 import { useMemory } from "../contexts/MemoryContext";
 import { useCapability } from "../contexts/CapabilityContext";
-import { VOICE_CATALOG } from "../config/voices";
+import { VOICE_CATALOG, VOICE_TONES } from "../config/voices";
+import { VoiceTone } from "../types";
 import { SUPPORTED_LANGUAGES } from "../config/languages";
 import { CHARACTER_AVATARS } from "../config/avatars";
 import { UserAvatar } from "./UserAvatar";
@@ -497,6 +498,54 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, i
                         ))}
                       </select>
                       <ChevronDown className="w-4 h-4 absolute right-0 top-1 text-neutral-400 pointer-events-none" />
+                    </div>
+                  </div>
+
+                  <div className="h-px bg-neutral-800/80" />
+
+                  {/* Voice Tone Selection */}
+                  <div className="py-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <div>
+                        <span className="text-sm text-neutral-300 font-normal">Voice Tone</span>
+                        <p className="text-[11px] text-neutral-400">
+                          Customize auditory delivery, inflection, and conversational warmth
+                        </p>
+                      </div>
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 capitalize">
+                        {voiceSettings.voice_tone || "conversational"}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+                      {VOICE_TONES.map((tone) => {
+                        const isSelected = (voiceSettings.voice_tone || "conversational") === tone.id;
+                        return (
+                          <button
+                            key={tone.id}
+                            type="button"
+                            id={`tone-select-${tone.id}`}
+                            onClick={() => updateVoiceSettings({ voice_tone: tone.id as VoiceTone })}
+                            className={`p-2.5 rounded-xl border text-left transition-all relative group ${
+                              isSelected
+                                ? "bg-cyan-500/15 border-cyan-500/50 text-white shadow-xs"
+                                : "bg-neutral-800/40 border-neutral-700/60 hover:bg-neutral-800/80 hover:border-neutral-600 text-neutral-300"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs font-semibold capitalize text-white">
+                                {tone.label}
+                              </span>
+                              {isSelected && (
+                                <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                              )}
+                            </div>
+                            <p className="text-[10px] text-neutral-400 leading-tight">
+                              {tone.description}
+                            </p>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

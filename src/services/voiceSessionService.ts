@@ -297,6 +297,7 @@ export class VoiceSessionService {
               voiceId: preferences.voice_id,
               language: preferences.language,
               speakingSpeed: preferences.speaking_speed,
+              voiceTone: preferences.voice_tone || "conversational",
               userName,
             },
           })

@@ -106,11 +106,12 @@ async function startServer() {
   // Voice Library Preview API (TTS)
   app.post("/api/voice/preview", async (req, res) => {
     try {
-      const { voiceId, customText, language } = req.body;
+      const { voiceId, customText, language, voiceTone } = req.body;
       const preview = await generateVoicePreview({
         voiceId: voiceId || "unique",
         customText,
         language,
+        voiceTone,
       });
 
       return res.json(preview);

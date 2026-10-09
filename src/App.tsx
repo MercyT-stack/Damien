@@ -13,11 +13,16 @@ import { SettingsModal, SettingsTab } from "./components/SettingsModal";
 import { AuthModal } from "./components/AuthModal";
 import { WelcomePersonalizeModal } from "./components/WelcomePersonalizeModal";
 import { CommandPalette } from "./components/CommandPalette";
+import { DownloadChatModal } from "./components/DownloadChatModal";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
+import { useAuth } from "./contexts/AuthContext";
+import { useMemory } from "./contexts/MemoryContext";
 
 const AngelMainLayout: React.FC = () => {
-  const { startNewConversation } = useConversation();
+  const { startNewConversation, activeConversation, messages } = useConversation();
   const { isVoiceActive, startVoiceSession, stopVoiceSession } = useVoice();
+  const { user } = useAuth();
+  const { memoryPreferences } = useMemory();
 
   // Sidebar open/receded state (persisted locally)
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(() => {
@@ -30,6 +35,7 @@ const AngelMainLayout: React.FC = () => {
   const [authOpen, setAuthOpen] = useState<boolean>(false);
   const [welcomePersonalizeOpen, setWelcomePersonalizeOpen] = useState<boolean>(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState<boolean>(false);
+  const [downloadModalOpen, setDownloadModalOpen] = useState<boolean>(false);
   const [composerPrompt, setComposerPrompt] = useState<string>("");
 
   useEffect(() => {
@@ -77,6 +83,7 @@ const AngelMainLayout: React.FC = () => {
     setCommandPaletteOpen(false);
     setSettingsOpen(false);
     setAuthOpen(false);
+    setDownloadModalOpen(false);
   }, []);
 
   // Wire Global Keyboard Shortcuts
@@ -88,6 +95,7 @@ const AngelMainLayout: React.FC = () => {
     onToggleVoice: handleToggleVoice,
     onFocusComposer: handleFocusComposer,
     onCloseModals: handleCloseModals,
+    onDownloadChat: () => setDownloadModalOpen(true),
   });
 
   return (
@@ -133,6 +141,20 @@ const AngelMainLayout: React.FC = () => {
         onClose={() => setCommandPaletteOpen(false)}
         onOpenSettings={handleOpenSettings}
         onToggleSidebar={handleToggleSidebar}
+        onOpenDownloadChat={() => setDownloadModalOpen(true)}
+      />
+
+      {/* Global Download Chat Modal */}
+      <DownloadChatModal
+        isOpen={downloadModalOpen}
+        onClose={() => setDownloadModalOpen(false)}
+        conversation={activeConversation}
+        messages={messages}
+        userInfo={{
+          name: user?.name,
+          email: user?.email,
+          nickname: memoryPreferences?.preferred_name || user?.username || user?.display_name,
+        }}
       />
 
       {/* Settings & Auth Modal Dialogs */}

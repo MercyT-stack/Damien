@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import { useConversation } from "../contexts/ConversationContext";
 import { useAuth } from "../contexts/AuthContext";
+import { useMemory } from "../contexts/MemoryContext";
 import { useVoice } from "../contexts/VoiceContext";
 import { useCapability } from "../contexts/CapabilityContext";
 import { AngelLogo } from "./AngelLogo";
@@ -11,6 +12,9 @@ import { TaskExecutionPanel } from "./TaskExecutionPanel";
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { ArtifactViewerModal } from "./artifacts/ArtifactViewerModal";
 import { ActionPreviewModal } from "./ActionPreviewModal";
+import { DownloadChatModal } from "./DownloadChatModal";
+import { ReadAloudPlayerBar } from "./ReadAloudPlayerBar";
+import { useReadAloud } from "../hooks/useReadAloud";
 import { UserAvatar } from "./UserAvatar";
 import { 
   Copy, 
@@ -19,6 +23,7 @@ import {
   RefreshCw, 
   Sparkles, 
   Volume2, 
+  VolumeX,
   Radio,
   Globe,
   ExternalLink,
@@ -31,7 +36,10 @@ import {
   CheckCircle2,
   Download,
   Eye,
-  Clock
+  Clock,
+  MessageSquare,
+  Square,
+  ArrowDown
 } from "lucide-react";
 import { ToolArtifact } from "../types/toolTypes";
 
@@ -51,6 +59,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
   } = useConversation();
 
   const { user } = useAuth();
+  const { memoryPreferences } = useMemory();
   const { isVoiceActive, liveTranscript, voiceState, selectedVoice } = useVoice();
   const {
     setActiveArtifactModal,
@@ -60,12 +69,83 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
     setActiveActionPreview,
   } = useCapability();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
+  const [showScrollBottomBtn, setShowScrollBottomBtn] = useState<boolean>(false);
+  const isNearBottomRef = useRef<boolean>(true);
+  const prevMessagesCountRef = useRef<number>(messages.length);
+  const readAloud = useReadAloud();
 
-  // Auto scroll to bottom
+  // Stop read aloud when Live Voice session is active
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, streamingMessage, isStreaming, liveTranscript]);
+    if (isVoiceActive) {
+      readAloud.stop();
+    }
+  }, [isVoiceActive, readAloud]);
+
+  // Scroll active message into view when reading conversation aloud
+  useEffect(() => {
+    if (readAloud.isConversationMode && readAloud.activeMessageId) {
+      const el = document.getElementById(`message-${readAloud.activeMessageId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [readAloud.activeMessageId, readAloud.isConversationMode]);
+
+  // Handle user scroll events to detect if user has scrolled away from bottom
+  const handleScroll = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = container;
+    const distanceToBottom = scrollHeight - (scrollTop + clientHeight);
+
+    // Consider within 120px as "near bottom"
+    const isAtBottom = distanceToBottom <= 120;
+    isNearBottomRef.current = isAtBottom;
+
+    if (distanceToBottom > 240 && messages.length > 2) {
+      setShowScrollBottomBtn(true);
+    } else {
+      setShowScrollBottomBtn(false);
+    }
+  };
+
+  // Dedicated function to scroll cleanly to the most recent message
+  const scrollToBottom = (behavior: ScrollBehavior = "smooth") => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior, block: "end" });
+    }
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+    }
+    setShowScrollBottomBtn(false);
+    isNearBottomRef.current = true;
+  };
+
+  // Auto scroll to bottom when new content is added to the conversation history
+  useEffect(() => {
+    if (readAloud.isPlaying) return;
+
+    const countChanged = messages.length !== prevMessagesCountRef.current;
+    prevMessagesCountRef.current = messages.length;
+
+    // When a brand new message is added or streamed, or if user is near bottom, ensure it's visible
+    if (countChanged || isNearBottomRef.current || isStreaming) {
+      // Immediate frame
+      requestAnimationFrame(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+        }
+        messagesEndRef.current?.scrollIntoView({
+          behavior: countChanged ? "smooth" : "auto",
+          block: "end",
+        });
+      });
+    }
+  }, [messages, streamingMessage, isStreaming, liveTranscript, readAloud.isPlaying]);
 
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -153,7 +233,12 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
   };
 
   return (
-    <div id="angel-chat-area" className="flex-1 overflow-y-auto px-4 py-6">
+    <div
+      id="angel-chat-area"
+      ref={scrollContainerRef}
+      onScroll={handleScroll}
+      className="flex-1 overflow-y-auto px-4 py-6 relative custom-scrollbar scroll-smooth"
+    >
       {/* Global Capability Modals */}
       <PermissionRequestModal />
       <ArtifactViewerModal />
@@ -163,6 +248,17 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
         onReject={rejectActionPreview}
         onClose={() => setActiveActionPreview(null)}
       />
+      <DownloadChatModal
+        isOpen={isDownloadModalOpen}
+        onClose={() => setIsDownloadModalOpen(false)}
+        conversation={activeConversation}
+        messages={messages}
+        userInfo={{
+          name: user?.name,
+          email: user?.email,
+          nickname: memoryPreferences?.preferred_name || user?.username || user?.display_name,
+        }}
+      />
 
       <div className="max-w-3xl mx-auto space-y-6">
         {/* Angel Live In-Chat Banner */}
@@ -170,6 +266,74 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
 
         {/* Active Multi-step Task Pipeline Panel */}
         <TaskExecutionPanel />
+
+        {/* Conversation Header & Download Action Bar (when messages exist) */}
+        {messages.length > 0 && (
+          <div
+            id="conversation-header-action-bar"
+            className="flex items-center justify-between px-3 py-2 rounded-xl bg-neutral-100/70 dark:bg-neutral-900/60 border border-neutral-200/60 dark:border-neutral-800/60 backdrop-blur-xs animate-fadeIn"
+          >
+            <div className="flex items-center gap-2 min-w-0 pr-2">
+              <MessageSquare className="w-4 h-4 text-cyan-500 shrink-0" />
+              <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200 truncate">
+                {activeConversation?.title || "Active Conversation"}
+              </span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-neutral-200/70 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 shrink-0 font-medium">
+                {messages.length} {messages.length === 1 ? "message" : "messages"}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1.5 shrink-0">
+              {/* Read Aloud Conversation Button */}
+              {readAloud.isSupported && (
+                <button
+                  id="btn-read-aloud-chat"
+                  onClick={() => {
+                    if (readAloud.isPlaying && readAloud.isConversationMode) {
+                      readAloud.stop();
+                    } else {
+                      readAloud.speakConversation(messages);
+                    }
+                  }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border shadow-2xs hover:shadow-xs transition group ${
+                    readAloud.isPlaying && readAloud.isConversationMode
+                      ? "bg-cyan-500/15 border-cyan-500/40 text-cyan-700 dark:text-cyan-300"
+                      : "bg-white dark:bg-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-700/80 text-neutral-800 dark:text-neutral-200 border-neutral-200/80 dark:border-neutral-700"
+                  }`}
+                  title={
+                    readAloud.isPlaying && readAloud.isConversationMode
+                      ? "Stop Reading History"
+                      : "Read Entire Conversation Aloud (Web Speech API)"
+                  }
+                  aria-label="Read Conversation Aloud"
+                >
+                  {readAloud.isPlaying && readAloud.isConversationMode ? (
+                    <>
+                      <Square className="w-3.5 h-3.5 text-rose-500 fill-current" />
+                      <span className="font-semibold text-rose-600 dark:text-rose-400">Stop Reading</span>
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 className="w-3.5 h-3.5 text-cyan-500 group-hover:scale-110 transition-transform" />
+                      <span className="font-semibold text-neutral-700 dark:text-neutral-300">Read Aloud</span>
+                    </>
+                  )}
+                </button>
+              )}
+
+              <button
+                id="btn-download-chat"
+                onClick={() => setIsDownloadModalOpen(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white dark:bg-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-700/80 text-neutral-800 dark:text-neutral-200 border border-neutral-200/80 dark:border-neutral-700 shadow-2xs hover:shadow-xs transition group"
+                title="Download Chat (PDF or JSON)"
+                aria-label="Download Chat"
+              >
+                <Download className="w-3.5 h-3.5 text-cyan-500 group-hover:scale-110 transition-transform" />
+                <span className="font-semibold text-cyan-700 dark:text-cyan-400">Download Chat</span>
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Error Notification Banner */}
         {error && (
@@ -213,6 +377,8 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
               const showDateDivider = index === 0 || !isSameDay(prevMsg?.created_at, msg.created_at);
               const formattedTime = formatMessageTime(msg.created_at);
               const fullDateTime = formatFullDateTime(msg.created_at);
+              const isThisMessagePlaying =
+                readAloud.activeMessageId === msg.id && (readAloud.isPlaying || readAloud.isPaused);
 
               return (
                 <React.Fragment key={msg.id}>
@@ -240,7 +406,11 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
 
                     {/* Message Bubble Container */}
                     <div
-                      className={`relative max-w-[85%] sm:max-w-[80%] group rounded-2xl p-4 sm:p-5 text-sm leading-relaxed ${
+                      className={`relative max-w-[85%] sm:max-w-[80%] group rounded-2xl p-4 sm:p-5 text-sm leading-relaxed transition-all duration-200 ${
+                        isThisMessagePlaying
+                          ? "ring-2 ring-cyan-500 shadow-lg shadow-cyan-500/20"
+                          : ""
+                      } ${
                         isUser
                           ? "bg-white text-neutral-950 dark:bg-white dark:text-neutral-950 font-normal rounded-tr-xs shadow-md border border-neutral-200/60 dark:border-transparent"
                           : "bg-[#131314] text-neutral-100 border border-neutral-800/90 rounded-tl-xs shadow-md"
@@ -275,6 +445,35 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                                 <Clock className="w-3 h-3 opacity-60" />
                                 <span>{formattedTime}</span>
                               </span>
+                            )}
+                            {readAloud.isSupported && (
+                              <button
+                                id={`btn-read-aloud-msg-${msg.id}`}
+                                onClick={() => readAloud.speakMessage(msg)}
+                                className={`p-1 rounded-md transition-all ${
+                                  isThisMessagePlaying
+                                    ? "text-cyan-400 bg-cyan-500/20 opacity-100"
+                                    : "opacity-0 group-hover:opacity-100 text-neutral-400 hover:text-white hover:bg-neutral-800"
+                                }`}
+                                title={
+                                  isThisMessagePlaying
+                                    ? readAloud.isPaused
+                                      ? "Resume playback"
+                                      : "Pause / Stop reading"
+                                    : "Read response aloud"
+                                }
+                                aria-label="Read response aloud"
+                              >
+                                {isThisMessagePlaying ? (
+                                  readAloud.isPaused ? (
+                                    <Volume2 className="w-3.5 h-3.5 text-amber-400" />
+                                  ) : (
+                                    <Volume2 className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+                                  )
+                                ) : (
+                                  <Volume2 className="w-3.5 h-3.5" />
+                                )}
+                              </button>
                             )}
                             <button
                               id={`btn-copy-msg-${msg.id}`}
@@ -324,15 +523,37 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
                             </div>
                           )}
                           <div className="whitespace-pre-wrap text-neutral-900 font-normal break-words">{msg.content}</div>
-                          {formattedTime && (
-                            <div
-                              className="flex items-center justify-end gap-1 pt-1 text-[10px] text-neutral-500 select-none font-mono tracking-tight"
-                              title={fullDateTime}
-                            >
-                              <Clock className="w-2.5 h-2.5 opacity-60" />
-                              <span>{formattedTime}</span>
-                            </div>
-                          )}
+                          <div className="flex items-center justify-end gap-2 pt-1 text-[10px] text-neutral-500 select-none font-mono tracking-tight">
+                            {readAloud.isSupported && (
+                              <button
+                                id={`btn-read-aloud-user-${msg.id}`}
+                                onClick={() => readAloud.speakMessage(msg)}
+                                className={`p-1 rounded-md transition-all ${
+                                  isThisMessagePlaying
+                                    ? "text-cyan-600 bg-cyan-500/20 opacity-100"
+                                    : "opacity-0 group-hover:opacity-100 text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100"
+                                }`}
+                                title={
+                                  isThisMessagePlaying
+                                    ? readAloud.isPaused
+                                      ? "Resume playback"
+                                      : "Pause / Stop reading"
+                                    : "Read message aloud"
+                                }
+                                aria-label="Read message aloud"
+                              >
+                                <Volume2
+                                  className={`w-3 h-3 ${isThisMessagePlaying ? "text-cyan-600 animate-pulse" : ""}`}
+                                />
+                              </button>
+                            )}
+                            {formattedTime && (
+                              <div className="flex items-center gap-1" title={fullDateTime}>
+                                <Clock className="w-2.5 h-2.5 opacity-60" />
+                                <span>{formattedTime}</span>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       ) : (
                       <div className="space-y-3">
@@ -512,7 +733,25 @@ export const ChatArea: React.FC<ChatAreaProps> = ({ onSelectPrompt }) => {
             <div ref={messagesEndRef} />
           </div>
         )}
+
+        {/* Auditory Playback Controller Bar */}
+        <ReadAloudPlayerBar player={readAloud} />
       </div>
+
+      {/* Floating Scroll To Bottom Button when user scrolled up */}
+      {showScrollBottomBtn && (
+        <button
+          id="btn-scroll-to-bottom"
+          type="button"
+          onClick={() => scrollToBottom("smooth")}
+          className="fixed bottom-24 right-8 z-30 flex items-center gap-1.5 px-3 py-2 rounded-full bg-cyan-500 text-neutral-950 font-semibold text-xs shadow-lg shadow-cyan-500/25 hover:bg-cyan-400 hover:scale-105 active:scale-95 transition-all animate-bounce"
+          aria-label="Scroll to newest message"
+          title="Scroll to most recent message"
+        >
+          <ArrowDown className="w-3.5 h-3.5 stroke-[2.5]" />
+          <span>Newest</span>
+        </button>
+      )}
     </div>
   );
 };
